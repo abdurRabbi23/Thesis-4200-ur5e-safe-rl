@@ -25,7 +25,36 @@ Safe Adaptive IBVS with constrained RL (cPPO) for precision grasping on a UR5e, 
 Three layers: **L1** safe-RL grasping in sim (must-pass), **L2** IBVS visual loop (stretch),
 **L3** sim-to-real on the physical UR5e (optional). See `PROJECT_INSTRUCTIONS.md`.
 
-## Current status (updated 2026-07-27, Day 1 — MODULE 01 COMPLETE)
+## Current status (updated 2026-07-27, Day 2 — MODULE 02: ARM SIGNED OFF)
+
+**The UR5e arm loads, holds pose, and is signed off.** `check_ur5e.py` reports **9/9 PASS**:
+6 joints in UR order, 7 bodies, fixed base, no `ArticulationRootAPI` error, effort limits
+150/150/150/28/28/28 N·m and velocity 3.142 rad/s — both matching the UR5e datasheet, read off
+the USD rather than assumed. Home-pose EE at **x=0.433, y=0.133, z=0.473 m**.
+
+Two decisions worth carrying:
+
+- **Asset:** Isaac Lab ships no UR5e *config*, but the Nucleus library does ship the *USD*
+  (`Robots/UniversalRobots/ur5e/ur5e.usd`). No URDF import for the arm. Confirmed by
+  `probe_ur5e_asset.py`, which includes a reachability control.
+- **One tuning change, measured not guessed:** elbow stiffness 600 → 1320. `τ = k · err` showed
+  the elbow carrying the largest gravity torque (16.0 N·m) on the weakest gain — inherited from
+  `UR10e_CFG`, tuned for a heavier robot. Prediction 0.01214 rad was recorded *before* the run;
+  measured 0.011847 (−2.4%, explained). Every other joint unchanged to 4 dp.
+
+**Module 02 continues with the gripper.** Robotiq 2F-85 stays rejected (§9). Plan: copy the
+archive's `assets/rh_p12_rn/` URDF + meshes as **third-party source**, then rebuild the URDF→USD
+conversion and flange mount *here*, re-measuring every geometric number. Detail in
+`02_grasp_env.md`; runbook in `HANDOFF_next.md`.
+
+**Archive correction (2026-07-27):** the lift-env **table is Isaac Lab stock**
+(`lift_env_cfg.py:45`, SeattleLabTable at `[0.5, 0, 0]`), inherited by subclassing `LiftEnvCfg`.
+It was never previous-attempt work and needs no import. Separately, the archive's Layer 1
+headline (cPPO 6.65% vs PPO 16.86%) was measured with a **proximity weld** standing in for a
+gripper — its own `00_INDEX.md` Day 17 records that cPPO was never run on the RH-P12-RN. Treat
+the archive as an unfinished target, valuable for its diagnoses rather than its numbers.
+
+## Previous status (2026-07-27, Day 1 — MODULE 01 COMPLETE)
 
 **Module 01 is done. The stack is verified and the RL loop trains in this folder.** Six gates green:
 frozen stack confirmed, Isaac Lab cloned at **tag `v2.3.0`** (HEAD `3c6e67bb5`), the `isaaclab` env
@@ -53,7 +82,7 @@ no results were carried over.** Any number that enters this thesis must be re-me
 | File | Work-stream | Status |
 |---|---|---|
 | `01_env_setup.md` | Stack install, Isaac validation, reaching tasks | ✅ complete (Day 1) |
-| `02_grasp_env.md` | UR5e lift env, grasp, PPO baseline | ▶ NEXT |
+| `02_grasp_env.md` | UR5e lift env, grasp, PPO baseline | ▶ ACTIVE — arm ✅ signed off (Day 2), gripper next |
 | `03_cppo_benchmark.md` | Safety constraints + cPPO vs PPO (**Layer 1 deliverable**) | ◻ not started |
 | `04_layer2_ibvs.md` | IBVS visual loop, RL-tuned image Jacobian (Layer 2) | ◻ not started |
 | `05_layer3_sim2real.md` | Real gripper + ROS 2 transfer (Layer 3) | ◻ not started |

@@ -1,0 +1,115 @@
+[3gH    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H[INFO] Using python from: /home/mte/miniconda3/envs/isaaclab/bin/python
+[INFO][AppLauncher]: Using device: cuda:0
+[INFO][AppLauncher]: Loading experience file: /home/mte/Abdur_Rabbi_Thesis_updated/IsaacLab/apps/isaaclab.python.headless.kit
+[Warning] [simulation_app.simulation_app] Modules: ['omni.kit_app'] were loaded before SimulationApp was started and might not be loaded correctly.
+[Warning] [simulation_app.simulation_app] Please check to make sure no extra omniverse or pxr modules are imported before the call to SimulationApp(...)
+Loading user config located at: '/home/mte/miniconda3/envs/isaaclab/lib/python3.11/site-packages/omni/data/Kit/Isaac-Sim/5.1/user.config.json'
+[Info] [carb] Logging to file: /home/mte/miniconda3/envs/isaaclab/lib/python3.11/site-packages/omni/logs/Kit/Isaac-Sim/5.1/kit_20260727_221215.log
+2026-07-27T16:12:15Z [105ms] [Warning] [omni.usd_config.extension] Enable omni.materialx.libs extension to use MaterialX
+2026-07-27T16:12:15Z [506ms] [Warning] [omni.isaac.dynamic_control] omni.isaac.dynamic_control is deprecated as of Isaac Sim 4.5. No action is needed from end-users.
+Warp CUDA error: Failed to get driver entry point 'cuDeviceGetUuid' (CUDA error 1)
+Warp CUDA error: Function cuDeviceGetUuid_f: a suitable driver entry point was not found
+Warp CUDA error 36: API call is not supported in the installed CUDA driver (in function cuda_init, /builds/omniverse/warp/warp/native/warp.cu:277)
+2026-07-27T16:12:19Z [3,964ms] [Warning] [gpu.foundation.plugin] Skipping unsupported non-NVIDIA GPU: Intel(R) Graphics (RPL-S)
+2026-07-27T16:12:19Z [3,964ms] [Warning] [gpu.foundation.plugin] Skipping unsupported non-NVIDIA GPU: Intel(R) Graphics (RPL-S)
+
+|---------------------------------------------------------------------------------------------|
+| Driver Version: 580.173.02    | Graphics API: Vulkan
+|=============================================================================================|
+| GPU | Name                             | Active | LDA | GPU Memory | Vendor-ID | LUID       |
+|     |                                  |        |     |            | Device-ID | UUID       |
+|     |                                  |        |     |            | Bus-ID    |            |
+|---------------------------------------------------------------------------------------------|
+| 0   | NVIDIA GeForce RTX 5090          | Yes: 0 |     | 32853   MB | 10de      | 0          |
+|     |                                  |        |     |            | 2b85      | 578d95f1.. |
+|     |                                  |        |     |            | 1         |            |
+|---------------------------------------------------------------------------------------------|
+| 1   | Intel(R) Graphics (RPL-S)        |        |     | 48076   MB | 8086      | 0          |
+|     |                                  |        |     |            | a780      | 868080a7.. |
+|     |                                  |        |     |            | 0         |            |
+|=============================================================================================|
+| OS: 22.04.5 LTS (Jammy Jellyfish) ubuntu, Version: 22.04.5, Kernel: 6.8.0-136-generic
+| XServer Vendor: The X.Org Foundation, XServer Version: 12101004 (1.21.1.4)
+| Processor: Intel(R) Core(TM) i9-14900K
+| Bare Metal Cores: 24 | Bare Metal Logical Cores: 48
+| Available Cores:  32 
+|---------------------------------------------------------------------------------------------|
+| Total Memory (MB): 64102 | Free Memory: 52879
+| Total Page/Swap (MB): 13741 | Free Page/Swap: 13741
+|---------------------------------------------------------------------------------------------|
+2026-07-27T16:12:19Z [4,161ms] [Warning] [gpu.foundation.plugin] PCIe link width current (8) and maximum (16) for device 0 don't match.
+2026-07-27T16:12:19Z [4,161ms] [Warning] [gpu.foundation.plugin] IOMMU is enabled.
+2026-07-27T16:12:19Z [4,161ms] [Warning] [gpu.foundation.plugin] Detected IOMMU is enabled. Running CUDA peer-to-peer bandwidth and latency validation.
+Unidirectional P2P=Enabled Bandwidth (P2P Writes) Matrix (GB/s)
+   D\D     0 
+     0 1531.86 
+P2P=Enabled Latency (P2P Writes) Matrix (us)
+   GPU     0 
+     0   2.06 
+
+   CPU     0 
+     0   2.42 
+
+==============================================================================
+UR5e ARM-ONLY VALIDATION  —  Module 02, STEP 4
+==============================================================================
+usd_path         : https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/5.1/Isaac/Robots/UniversalRobots/ur5e/ur5e.usd
+gravity disabled : False
+solver pos iters : 16
+actuator groups  : ['shoulder', 'elbow', 'wrist']
+==============================================================================
+
+--- 1. articulation loaded ---
+  [PASS] loads without ArticulationRootAPI error  — sim.reset() returned
+  [PASS] fixed base (arm is bolted down, not floating)  — is_fixed_base=True
+  bodies (7): ['base_link', 'shoulder_link', 'upper_arm_link', 'forearm_link', 'wrist_1_link', 'wrist_2_link', 'wrist_3_link']
+
+--- 2. joints ---
+  [PASS] exactly 6 joints  — num_joints=6
+  [PASS] joint names match the UR convention, in order  — ['shoulder_pan_joint', 'shoulder_lift_joint', 'elbow_joint', 'wrist_1_joint', 'wrist_2_joint', 'wrist_3_joint']
+
+--- 3. joint limits (env 0) ---
+  joint                      lower     upper    effort       vel      home
+  shoulder_pan_joint        -6.283     6.283     150.0     3.142     0.000
+  shoulder_lift_joint       -6.283     6.283     150.0     3.142    -1.712
+  elbow_joint               -3.142     3.142     150.0     3.142     1.712
+  wrist_1_joint             -6.283     6.283      28.0     3.142    -1.571
+  wrist_2_joint             -6.283     6.283      28.0     3.142    -1.571
+  wrist_3_joint             -6.283     6.283      28.0     3.142     0.000
+  [PASS] limits finite and lower < upper
+  [PASS] home pose lies inside the joint limits
+
+--- 4. holding home pose for 300 steps ---
+      step    max |q - q_home| (rad)
+         0                  0.003656
+        50                  0.011847
+       100                  0.011847
+       150                  0.011847
+       200                  0.011847
+       250                  0.011847
+       299                  0.011847
+
+  per-joint steady-state error at step 299:
+  joint                      group   stiffness   err (rad)   err (deg)
+  shoulder_pan_joint      shoulder      1320.0    0.000082       0.005
+  shoulder_lift_joint     shoulder      1320.0    0.008926       0.511
+  elbow_joint                elbow      1320.0    0.011847       0.679
+  wrist_1_joint              wrist       216.0    0.006389       0.366
+  wrist_2_joint              wrist       216.0   -0.000000      -0.000
+  wrist_3_joint              wrist       216.0   -0.000000      -0.000
+
+  worst joint: elbow_joint  (group 'elbow')
+  -> if this needs fixing, that group's stiffness is the ONE knob to move.
+  [PASS] did not explode (finite, drift < 1 rad)  — peak 0.013107 rad
+  [PASS] settled within tolerance (0.02 rad)  — final 0.011847 rad
+  [PASS] drift is not still growing  — peak 0.013107 rad
+
+  end-effector body : wrist_3_link
+  position (world)  : x=+0.433  y=+0.133  z=+0.473  m
+  (not a pass/fail — this is what decides where the table goes in the lift env)
+
+==============================================================================
+RESULT: PASS — all 9 checks green. Arm is signed off.
+Next: the gripper decision (Robotiq 2F-85 is rejected — see PROJECT_INSTRUCTIONS §9).
+==============================================================================
+

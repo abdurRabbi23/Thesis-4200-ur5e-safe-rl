@@ -31,3 +31,20 @@ recorded explicitly instead of assumed.
 2026-07-27 — `logbook/01_env_setup.md`, `run_log.md`, `logbook/00_INDEX.md`,
 `Thesis_Documentation/01_Environment_Setup.md`, `10_Command_Reference.md` — Module 01 written up:
 all six verification gates, measured values, and the commands that produced them.
+
+2026-07-27 — `Thesis_Documentation/07_Troubleshooting.md` — three entries added from Module 02:
+the block-buffered-stdout trap that makes a crashed Isaac Sim script look truncated (plus the
+`$?`-reports-tee trap); the "no UR5 config but the USD exists" finding and why the probe needs a
+reachability control; and the steady-state-sag diagnosis method (`τ = k · err`) with the
+`shoulder_pan ≈ 0` sanity check.
+
+2026-07-27 — `logbook/02_grasp_env.md`, `run_log.md`, `logbook/00_INDEX.md`,
+`logbook/HANDOFF_next.md` — Module 02 arm sign-off written up: the asset probe result, the UR10e
+-vs-UR10 pattern decision, the gravity-on decision and its rationale, the single elbow-stiffness
+change with its pre-registered prediction and measured outcome, and the archive inspection.
+
+2026-07-27 — archive inspection recorded in `logbook/02_grasp_env.md` STEP 2b. Correction to a
+working assumption: the lift-env **table is Isaac Lab stock** (`lift_env_cfg.py:45`,
+SeattleLabTable at `[0.5, 0, 0]`), not previous-attempt work — it is inherited by subclassing
+`LiftEnvCfg` and requires no import. Also recorded that the archive's Layer 1 headline numbers
+were measured with a proximity weld, not a working gripper, per its own `00_INDEX.md` Day 17.

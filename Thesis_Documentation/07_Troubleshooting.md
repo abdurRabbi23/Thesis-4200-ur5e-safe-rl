@@ -149,3 +149,48 @@ overwrites the pointers.
 Measured 2026-07-27 (0.24 s/iter). The previous attempt's table (4096 → 2.44, 8192 → 1.98,
 16384 → 1.35) reflects an older driver/env and must not be used for budgeting here. Re-time on the
 actual target env in any case — `num_envs` throughput does not transfer between tasks.
+
+**A script's log ends mid-startup with none of the script's own output.**
+Symptom: the log shows the Isaac Sim GPU banner and then simply stops; the shell prompt has
+returned; no Python traceback anywhere. It looks like a truncated or hung run. It is neither.
+Two things combine:
+1. Isaac Sim can die hard inside `simulation_app.close()`. A native crash never unwinds, so
+   Python's buffers are discarded rather than flushed.
+2. Python's `stdout` is **block-buffered** (~4 KB) when piped — as it always is under `| tee`.
+   Everything the script printed is still sitting in that buffer when the process dies.
+The Isaac Sim banner survives because it comes from carb's C++ logger, which writes directly.
+That is exactly what makes the log look truncated instead of lost.
+Ruling it out is cheap: a Python *exception* would still print, because `stderr` is not
+block-buffered. No traceback + no output = native crash, not a Python error.
+Fix, both applied in this project: `PYTHONUNBUFFERED=1` on the command line, and
+`sys.stdout.reconfigure(line_buffering=True)` at the top of every script so it defends itself
+regardless of how it is invoked.
+Related trap in the same command: after a pipe, `$?` reports **tee's** exit status, which is
+always 0. A segfaulting script looks successful. Use `${PIPESTATUS[0]}`.
+First hit 2026-07-27, Module 02 (`probe_ur5e_asset.py` run 1).
+
+**Isaac Lab 2.3.0 ships no UR5 or UR5e configuration — but the USD asset exists.**
+`isaaclab_assets/robots/universal_robots.py` defines UR10 and UR10e only, and
+`grep -rni "ur5" IsaacLab/source/` returns two hits, both in a 2022 changelog line. The
+articulation config must be written. The *asset* does not: the Nucleus library carries
+`Robots/UniversalRobots/ur5e/ur5e.usd` (alongside ur3, ur3e, ur5, ur10, ur10e, ur16e, ur20,
+ur30). Do not import a URDF for the arm. Verify with `ur5_grasp/scripts/probe_ur5e_asset.py`,
+which lists the folder and includes the shipped UR10e path as a **control** — without that
+control an unreachable asset server is indistinguishable from a missing asset, and the wrong
+conclusion costs an afternoon of URDF conversion.
+
+**Steady-state joint sag is not drift, and stiffness is the knob — but only after you know which joint.**
+A held pose settling to a *constant* non-zero error is a P-controller balancing gravity:
+`err = τ_gravity / k`. It is not instability. Diagnose it by multiplying each joint's error by
+its own stiffness — that recovers the gravity torque each joint actually carries, and names the
+one to change. A max-over-joints number alone names a symptom, not a knob.
+Sanity check that validates the whole measurement: `shoulder_pan` error must be ≈ 0, because its
+axis is vertical and gravity has no leverage about it. If it isn't, distrust the rest.
+Measured here 2026-07-27: elbow carried the largest torque (16.0 N·m) on the *weakest* gain
+(600 vs shoulder 1320) because `UR10e_CFG` was tuned for a heavier arm. Raising elbow stiffness
+600 → 1320 moved the error 0.026703 → 0.011847 rad against 0.01214 predicted (−2.4%, explained
+by τ falling to 15.64 N·m as the arm sags less). `τ = k · err` is a calibrated way to set an arm
+gain from a measured torque.
+Caution: raising `k` alone lowers the damping ratio. Steady-state error does not care, so the
+prediction holds — but watch the step trace for ringing, and treat damping as the *next* single
+knob, never the same edit.
