@@ -22,3 +22,5 @@ Format: `YYYY-MM-DD | Day N | module | what happened | result / where logged`
 2026-07-27 | Day 1 | 01_env_setup | False alarm investigated and closed: Kit writes to `Kit/Isaac-Sim/5.1/` while pip reports Isaac Sim 5.0.0.0. Archive logs show the same path across working runs; archive logbook records it as the 5.1 *asset library* vs 5.0 sim. pip is authoritative. | benign — logged in 07_Troubleshooting.md §5
 
 2026-07-27 | Day 1 | 01_env_setup | **Module 01 COMPLETE.** All six gates green. Next: Module 02 UR5e ArticulationCfg. | ✅
+
+2026-07-27 | Day 1 | git | First real push failed: remote was `https://` and GitHub no longer accepts password auth. `ssh -T git@github.com` confirmed the key works; `git remote set-url origin git@github.com:abdurRabbi23/Thesis-4200-ur5e-safe-rl.git` fixed it. | pushed — commit d5f4b47, `[new branch] main -> main`, 52 objects. §5 corrected (it claimed SSH)

@@ -23,6 +23,11 @@ the benign `Kit/Isaac-Sim/5.1` vs pip `5.0.0.0` false alarm; the tag-not-branch 
 editable-install trap when reusing a conda env from the previous attempt. Also annotated the §1
 Franka Reach throughput table as superseded.
 
+2026-07-27 — `PROJECT_INSTRUCTIONS.md` §5 (Git) — corrected. §5 claimed an SSH remote; the repo was
+actually created with `https://`, which fails outright since GitHub removed git password auth. The
+remote URL, the one-time `git remote set-url` fix, and the `ssh -T git@github.com` check are now
+recorded explicitly instead of assumed.
+
 2026-07-27 — `logbook/01_env_setup.md`, `run_log.md`, `logbook/00_INDEX.md`,
 `Thesis_Documentation/01_Environment_Setup.md`, `10_Command_Reference.md` — Module 01 written up:
 all six verification gates, measured values, and the commands that produced them.

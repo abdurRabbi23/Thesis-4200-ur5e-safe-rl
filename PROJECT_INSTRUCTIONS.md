@@ -156,7 +156,7 @@ READ FIRST: logbook/00_INDEX.md, then logbook/NN_<module>.md
 ### Git
 
 - New repo, **fresh history**. First commit is this empty skeleton. The old repo (`ur5-safe-rl-thesis`) stays online, untouched, as the archive.
-- Branch `main`, public, SSH remote.
+- Branch `main`, public, **SSH** remote: `git@github.com:abdurRabbi23/Thesis-4200-ur5e-safe-rl.git`. The repo was initially created with an `https://` remote, which fails — GitHub removed password authentication for git operations. Fixed 2026-07-27 with `git remote set-url origin git@github.com:...`. If a push ever asks for a username, the remote has reverted to HTTPS; check `git remote -v`. Confirm the key with `ssh -T git@github.com` (the "does not provide shell access" reply *is* success).
 - Stage from the sandbox; **commit and push from the lab PC** — the SSH key lives there.
 - If `.git/index.lock` is stuck: `rm -f .git/index.lock` on the lab PC.
 - If a push is rejected as "behind": `git pull --rebase origin main`, then push.
