@@ -1,0 +1,30 @@
+# Isaac Lab clone — a dependency, not this thesis's work
+IsaacLab/
+
+# Training artefacts
+logs/
+runs/
+outputs/
+*.pt
+*.pth
+*.ckpt
+wandb/
+
+# Large media / sim assets that are regenerable
+*.usd
+*.usdc
+*.usda
+!ur5_grasp/assets/**/*.usd
+
+# Python
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+.venv/
+*.egg-info/
+
+# OS / editor
+.DS_Store
+*.swp
+.vscode/
+.idea/
