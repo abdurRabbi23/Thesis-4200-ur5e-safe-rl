@@ -38,7 +38,8 @@ Harmless. A fallback path is active. Ignore it.
 **`num_envs` throughput does not transfer between tasks.**
 The 8192 default was calibrated on Franka Reach, which is far lighter than a UR5 grasping env.
 Re-time it on the actual env before setting any training budget. Franka Reach reference:
-4096 → 2.44 it/s, 8192 → 1.98 it/s, 16384 → 1.35 it/s.
+4096 → 2.44 it/s, 8192 → 1.98 it/s, 16384 → 1.35 it/s. **⚠ Superseded 2026-07-27 — this machine
+measures ~4.2 it/s at 4096 envs. See §5.**
 
 ---
 
@@ -127,4 +128,24 @@ _Add every new error here as it is hit: symptom → cause → fix → date. Log 
 
 | Date | Module | Symptom | Cause | Fix |
 |---|---|---|---|---|
-| | | | | |
+| 2026-07-27 | 01 | Kit logs and user config load from `omni/.../Kit/Isaac-Sim/**5.1**/` while `pip list` reports Isaac Sim **5.0.0.0** — looks like the 5.0/5.1 mix-up §7 forbids | The **5.1** is the Nucleus **asset library** / Kit data-directory version, not the simulator version. The archive's own logs contain the identical path in 26 places across runs that produced documented results | **Nothing to fix — benign.** `pip list \| grep -i isaacsim` is the authoritative check. Do not act on the log path. |
+
+**Pin Isaac Lab to the TAG `v2.3.0`, never the `release/2.3.0` branch.**
+The branch tip advanced to 2.3.1, which exact-pins URDF importer `2.4.31` while Isaac Sim 5.0.0
+ships `2.4.19` → training crashes at startup. Carried over from the previous attempt (its Day 8
+bug), and §7 of `PROJECT_INSTRUCTIONS.md` said "release/2.3.0" until 2026-07-27, when it was
+corrected. Correct clone: `git checkout -b frozen/2.3.0 v2.3.0`, then confirm with
+`git describe --tags`.
+
+**Reusing an existing conda env can import code from the old thesis folder.**
+`./isaaclab.sh -i` registers the five `isaaclab*` packages as **editable** — a name→path pointer,
+one slot per name. An env built by a previous attempt still points at that attempt's folder, so
+`import isaaclab` silently runs old code and nothing errors. Check with
+`python -c "import isaaclab; print(isaaclab.__file__)"` and `pip list | grep isaaclab`; the paths
+must contain the current working folder. Re-running `./isaaclab.sh -i` from the new clone
+overwrites the pointers.
+
+**Franka Reach throughput on this machine is ~4.2 it/s at 4096 envs, not 2.44.**
+Measured 2026-07-27 (0.24 s/iter). The previous attempt's table (4096 → 2.44, 8192 → 1.98,
+16384 → 1.35) reflects an older driver/env and must not be used for budgeting here. Re-time on the
+actual target env in any case — `num_envs` throughput does not transfer between tasks.

@@ -25,29 +25,35 @@ Safe Adaptive IBVS with constrained RL (cPPO) for precision grasping on a UR5e, 
 Three layers: **L1** safe-RL grasping in sim (must-pass), **L2** IBVS visual loop (stretch),
 **L3** sim-to-real on the physical UR5e (optional). See `PROJECT_INSTRUCTIONS.md`.
 
-## Current status (updated 2026-07-27, Day 0 — CLEAN RESTART)
+## Current status (updated 2026-07-27, Day 1 — MODULE 01 COMPLETE)
 
-**The thesis has been restarted from zero in a new folder.** The previous attempt is archived
-read-only at `~/Abdur_Rabbi_THESIS` and must not be written to. Nothing in this folder has been
-built or measured yet — only this skeleton exists.
+**Module 01 is done. The stack is verified and the RL loop trains in this folder.** Six gates green:
+frozen stack confirmed, Isaac Lab cloned at **tag `v2.3.0`** (HEAD `3c6e67bb5`), the `isaaclab` env
+resolves to **this** folder, Cartpole converged (150 iters, ep length 300.00), Franka Reach trained
+clean (0 NaNs, position error 0.2702 → 0.0919 m, ~4.2 it/s at 4096 envs), TensorBoard reachable at
+`100.109.10.66:6006`. Detail in `01_env_setup.md`; replication steps in
+`Thesis_Documentation/01_Environment_Setup.md`.
 
-**Module 01 is next.** Fresh clone of Isaac Lab `release/2.3.0` into `IsaacLab/`, verify the
-frozen stack against `PROJECT_INSTRUCTIONS.md` §7, then validate the RL loop on a stock reaching
-task before touching anything UR5-specific.
+**Module 02 is next.** Write the UR5e `ArticulationCfg` modelled on the UR10 pattern in
+`isaaclab_assets/robots/universal_robots.py`. **Validate the arm alone in the GUI before attaching
+any gripper** — build before attach.
+
+**Two corrections made to `PROJECT_INSTRUCTIONS.md` §7 this session** (logged in `09_Changelog.md`):
+Isaac Lab ref is the **tag `v2.3.0`**, not the `release/2.3.0` branch — the branch reproduces the
+previous attempt's URDF-importer startup crash, and §7 had carried the wrong value forward into the
+Module 01 handoff. Driver corrected to 580.173.02. The archive's Franka Reach throughput table
+(2.44 it/s) is superseded by ~4.2 it/s measured here.
 
 **Carried over from the archive:** the working method, the documentation system, the frozen stack,
 and the landmine list in `Thesis_Documentation/07_Troubleshooting.md`. **No code, no configs and
 no results were carried over.** Any number that enters this thesis must be re-measured here.
 
-**Before the first command:** confirm the machine still matches §7 (`conda env list`, torch version
-+ CUDA availability, `nvidia-smi` driver). If anything has drifted, fix that before cloning.
-
 ## Modules
 
 | File | Work-stream | Status |
 |---|---|---|
-| `01_env_setup.md` | Stack install, Isaac validation, reaching tasks | ▶ NEXT |
-| `02_grasp_env.md` | UR5e lift env, grasp, PPO baseline | ◻ not started |
+| `01_env_setup.md` | Stack install, Isaac validation, reaching tasks | ✅ complete (Day 1) |
+| `02_grasp_env.md` | UR5e lift env, grasp, PPO baseline | ▶ NEXT |
 | `03_cppo_benchmark.md` | Safety constraints + cPPO vs PPO (**Layer 1 deliverable**) | ◻ not started |
 | `04_layer2_ibvs.md` | IBVS visual loop, RL-tuned image Jacobian (Layer 2) | ◻ not started |
 | `05_layer3_sim2real.md` | Real gripper + ROS 2 transfer (Layer 3) | ◻ not started |

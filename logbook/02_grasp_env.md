@@ -1,6 +1,6 @@
 # Module 02 — Grasp environment
 
-**Status:** ◻ not started
+**Status:** ▶ NEXT (Day 2) — starts with the UR5e `ArticulationCfg`, arm only, no gripper. Runbook in `HANDOFF_next.md`.
 **Owner file for:** UR5e articulation cfg, gripper, lift env, task registration, PPO baseline
 
 ---

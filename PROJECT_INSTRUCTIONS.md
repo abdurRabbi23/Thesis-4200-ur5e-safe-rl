@@ -182,10 +182,10 @@ READ FIRST: logbook/00_INDEX.md, then logbook/NN_<module>.md
 | Component | Version | Note |
 |---|---|---|
 | Isaac Sim | **5.0.0** | not 5.1, not 6.0 |
-| Isaac Lab | **release/2.3.0**, from source | **fresh clone into this folder** |
+| Isaac Lab | **tag `v2.3.0`**, from source | **fresh clone into this folder.** Pin the TAG, never the `release/2.3.0` branch — the branch advanced to 2.3.1 and exact-pins a URDF importer (2.4.31) Isaac Sim 5.0.0 does not ship (2.4.19) → crash at startup. `git checkout -b frozen/2.3.0 v2.3.0` |
 | Python | 3.11, conda env `isaaclab` | Miniconda3 at `~/miniconda3` |
 | PyTorch | 2.7.0 + cu128 | torchvision 0.22.0, torchaudio 2.7.0 — required for Blackwell sm_120 |
-| NVIDIA driver | 580.159.03 | 570+ required for Blackwell |
+| NVIDIA driver | 580.173.02 | 570+ required for Blackwell. Measured on the lab PC 2026-07-27; the previously recorded 580.159.03 no longer exists on the machine |
 | numpy | 1.26.0 | pinned by Isaac Sim — do not bump |
 | RL framework | rsl_rl (RSL-RL) | cPPO agent config on top |
 | Safe RL | PPO-Lagrangian, own implementation in `ur5_grasp/safe_rl/` | |
@@ -213,7 +213,7 @@ Full detail lives in `Thesis_Documentation/07_Troubleshooting.md`.
 - **Isaac Lab has no pre-built UR5 config.** It must be written, modelled on the UR10 pattern in `isaaclab_assets/robots/universal_robots.py`.
 - **Robotiq 2F-85 is rejected for the critical path** — mimic joints / kinematic loops are an unresolved Isaac Lab problem (issue #2424, discussion #2626). Approved: simple two-finger prismatic gripper (Franka-hand style), or the ROBOTIS RH-P12-RN. Escape hatch: fixed-joint / surface grasp.
 - **Build before attach:** validate the arm-only `ArticulationCfg` in the GUI (no `ArticulationRootAPI` error) before attaching any gripper.
-- **Re-time `num_envs` on the actual UR5 grasping env** before setting training budgets. The 8192 default was calibrated on Franka Reach, which is much lighter. Franka Reach reference: 4096 → 2.44 it/s, 8192 → 1.98 it/s, 16384 → 1.35 it/s.
+- **Re-time `num_envs` on the actual UR5 grasping env** before setting training budgets. The 8192 default was calibrated on Franka Reach, which is much lighter. Franka Reach reference: 4096 → 2.44 it/s, 8192 → 1.98 it/s, 16384 → 1.35 it/s. **⚠ Superseded 2026-07-27:** re-measured on this machine at **~4.2 it/s at 4096 envs** (0.24 s/iter). The archive table reflects an older driver/env — do not budget off it. See `Thesis_Documentation/07_Troubleshooting.md` §5.
 - **Warp `cuDeviceGetUuid` warning** on driver 580 is harmless — fallback is active.
 - `isaaclab.sh` lives **inside the `IsaacLab/` subdirectory**, not the thesis root. Run training from `cd ~/Abdur_Rabbi_Thesis_updated/IsaacLab` with `-p ../ur5_grasp/scripts/train.py`.
 
@@ -238,7 +238,7 @@ Full detail lives in `Thesis_Documentation/07_Troubleshooting.md`.
 
 ```
 ~/Abdur_Rabbi_Thesis_updated/   # THESIS ROOT — the only working directory
-├── IsaacLab/                   # fresh clone, release/2.3.0 (gitignored)
+├── IsaacLab/                   # fresh clone, tag v2.3.0 (gitignored)
 ├── ur5_grasp/                  # ALL custom code — NOT inside the Isaac Lab clone
 │   ├── CONTEXT.md              # what this package is, for a cold reader
 │   ├── robots/                 # UR5e + gripper ArticulationCfgs
