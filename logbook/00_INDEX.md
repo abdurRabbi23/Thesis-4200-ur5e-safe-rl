@@ -25,7 +25,44 @@ Safe Adaptive IBVS with constrained RL (cPPO) for precision grasping on a UR5e, 
 Three layers: **L1** safe-RL grasping in sim (must-pass), **L2** IBVS visual loop (stretch),
 **L3** sim-to-real on the physical UR5e (optional). See `PROJECT_INSTRUCTIONS.md`.
 
-## Current status (updated 2026-07-27, Day 2 — MODULE 02: ARM SIGNED OFF)
+## Current status (updated 2026-07-28, Day 3 — MODULE 02: GRIPPER MOUNTED + MEASURED)
+
+**The RH-P12-RN is on the arm as ONE articulation, and the geometry is measured.**
+`make_ur5e_rhp12_usd.py` reports **7/7 PASS**: 10 joints / 12 bodies, nested articulation root
+stripped, monotonic stroke, and an open clear opening of **106.4 mm against the ROBOTIS
+published 106.0 mm (+0.4 mm)** — the first number in this thesis validated against a source
+outside the project.
+
+Measured here, all with reproducible commands:
+
+| Quantity | Value |
+|---|---|
+| Pad gap, body origins, open → closed | 0.1145 → 0.0216 m |
+| Pad **face** gap, open → closed | 0.1064 → 0.0137 m |
+| Pad reach from origin (r + l) | 0.0081 m |
+| TCP from wrist, open → closed | 0.0767 → 0.1049 m |
+| DexCube edge, raw / at env scale 0.8 | **0.06000 / 0.04800 m** |
+
+**Three things worth carrying:**
+
+- **The archive's `TCP_OFFSET = 0.130` is invalidated.** It was calibrated against a 0.0412 m
+  cube; the cube is really **0.048 m**, measured by drop test. Its "flat-pad parallel grip at
+  delta +0.3 mm" is arithmetically impossible against the real cube. Reuse the archive's
+  *method*, reject its *constants* — §14 earning its place.
+- **The archive's origin-gap table replicates to 4 dp**, so its geometry work was sound. The
+  failure is specifically in calibration against the cube.
+- **New landmine: `Usd.PrimRange` silently skips instance proxies.** Isaac props and
+  URDF-converted assets are instanced by default, so any traversal that counts or authors
+  geometry finds nothing and reports success. Cost me one wrong diagnosis this session.
+
+**Prediction banked for the grasp test: pads stall at q ≈ 0.69** against the 0.048 m cube.
+Later → crushing or slipping; earlier → wedged on the curved `r1`/`l1` links.
+
+**Next:** `ur5_grasp/robots/ur5e_rhp12_cfg.py`, then the grasp test. The open question from
+Day 3 — sim gives 4 drivable finger joints where the real RH-P12-RN is 1-DOF — must be settled
+before the PPO baseline, not after.
+
+## Previous status (2026-07-27, Day 2 — MODULE 02: ARM SIGNED OFF)
 
 **The UR5e arm loads, holds pose, and is signed off.** `check_ur5e.py` reports **9/9 PASS**:
 6 joints in UR order, 7 bodies, fixed base, no `ArticulationRootAPI` error, effort limits
@@ -42,10 +79,19 @@ Two decisions worth carrying:
   `UR10e_CFG`, tuned for a heavier robot. Prediction 0.01214 rad was recorded *before* the run;
   measured 0.011847 (−2.4%, explained). Every other joint unchanged to 4 dp.
 
-**Module 02 continues with the gripper.** Robotiq 2F-85 stays rejected (§9). Plan: copy the
+**Module 02 continues with the gripper.** Plan: copy the
 archive's `assets/rh_p12_rn/` URDF + meshes as **third-party source**, then rebuild the URDF→USD
 conversion and flange mount *here*, re-measuring every geometric number. Detail in
 `02_grasp_env.md`; runbook in `HANDOFF_next.md`.
+
+**Scope change 2026-07-28 (Day 3):** the robot now carries **two selectable grippers** —
+RH-P12-RN *and* Robotiq 2F-85 — both really actuated, chosen at run time via a `--gripper` flag
+over a `GRIPPERS` registry, with separate task ids and `experiment_name` per gripper. §9's 2F-85
+rejection is a statement about the **URDF** route (tree cannot hold the four-bar loop), not about
+the gripper; it is re-opened **only** if `probe_gripper_assets.py` finds a shipped, already-coupled
+USD. The 2F-85 is a bonus result driven by literature comparability, **not** lab hardware —
+**Layer 1 never waits on it**, and the attempt is timeboxed to one day. Detail + decision rules in
+`02_grasp_env.md` § "SCOPE CHANGE".
 
 **Archive correction (2026-07-27):** the lift-env **table is Isaac Lab stock**
 (`lift_env_cfg.py:45`, SeattleLabTable at `[0.5, 0, 0]`), inherited by subclassing `LiftEnvCfg`.
@@ -82,7 +128,7 @@ no results were carried over.** Any number that enters this thesis must be re-me
 | File | Work-stream | Status |
 |---|---|---|
 | `01_env_setup.md` | Stack install, Isaac validation, reaching tasks | ✅ complete (Day 1) |
-| `02_grasp_env.md` | UR5e lift env, grasp, PPO baseline | ▶ ACTIVE — arm ✅ signed off (Day 2), gripper next |
+| `02_grasp_env.md` | UR5e lift env, grasp, PPO baseline | ▶ ACTIVE — arm ✅ (Day 2), gripper mounted + measured ✅ (Day 3); grasp test next |
 | `03_cppo_benchmark.md` | Safety constraints + cPPO vs PPO (**Layer 1 deliverable**) | ◻ not started |
 | `04_layer2_ibvs.md` | IBVS visual loop, RL-tuned image Jacobian (Layer 2) | ◻ not started |
 | `05_layer3_sim2real.md` | Real gripper + ROS 2 transfer (Layer 3) | ◻ not started |

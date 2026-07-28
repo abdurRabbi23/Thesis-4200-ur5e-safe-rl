@@ -1,0 +1,57 @@
+==============================================================================
+INSPECT USD GEOMETRY   target=cube
+==============================================================================
+usd    : https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/5.1/Isaac/Props/Blocks/DexCube/dex_cube_instanceable.usd
+report : /home/mte/Abdur_Rabbi_Thesis_updated/logbook/02_inspect_cube.log
+
+default prim : /DexCube  (type Xform)
+
+--- 1. Traversal comparison (this is the colour-bug diagnosis) ---
+    prims  without instance proxies : 3
+    prims  WITH    instance proxies : 8
+    Gprims without instance proxies : 0
+    Gprims WITH    instance proxies : 2
+    Meshes WITH    instance proxies : 1
+    prims marked instanceable       : 2
+    prims that ARE instances        : 2
+      instance /DexCube/visuals  -> prototype /__Prototype_1
+      instance /DexCube/collisions  -> prototype /__Prototype_2
+
+    CONFIRMED: the geometry is reachable ONLY through instance proxies.
+    This is why colour_gripper() found 0 renderable prims. Note that instance
+    proxies are READ-ONLY — you cannot author a displayColor or a material
+    binding on them. The fix is to author on the PROTOTYPE, or to clear the
+    instanceable flag on the referencing prims before editing.
+
+--- 2. Whole-asset bounds, by purpose ---
+    purpose default  : 0.06000 x 0.06000 x 0.06000
+    purpose render   : EMPTY
+    purpose proxy    : EMPTY
+    purpose guide    : 0.00360 x 0.00360 x 0.00360
+    default+render     : 0.06000 x 0.06000 x 0.06000   <- what make_ur5e_rhp12_usd.py used
+
+--- 3. Per-prim geometry (points are ground truth; extent is only a hint) ---
+    /DexCube/visuals/visuals
+      type=Mesh  purpose=default  instance-proxy
+      extent attr  : 2.00000 x 2.00000 x 2.00000
+      MESH POINTS  : 2.00000 x 2.00000 x 2.00000   (24 verts)
+    /DexCube/collisions/collisions
+      type=Cube  purpose=guide  instance-proxy CollisionAPI
+      extent attr  : 0.06000 x 0.06000 x 0.06000
+
+--- 4. Cube edge verdict ---
+    source                         raw edge (m)      x scale 0.8
+    bbox[default]                       0.06000          0.04800
+    bbox[guide]                         0.00360          0.00288
+    points[visuals]                     2.00000          1.60000
+
+    HOW TO READ THIS:
+      * If every source agrees, the cube really is that size and the previous
+        attempt's 0.0412 m was wrong. Use the measured value and say so.
+      * If the MESH POINTS are smaller than the bbox, something above the mesh
+        inflates it — a scale op, or a larger render proxy. The points win for
+        geometry; but check which prim carries CollisionAPI, because the pads
+        contact the COLLISION mesh, not the render mesh.
+      * A raw 0.0515 m here would vindicate the previous attempt's 0.0412 m.
+
+[report saved to /home/mte/Abdur_Rabbi_Thesis_updated/logbook/02_inspect_cube.log]

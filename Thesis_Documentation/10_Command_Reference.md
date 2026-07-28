@@ -79,3 +79,17 @@ _To be filled in during Module 03._
 | Activate env | `conda activate isaaclab` |
 | TensorBoard | `tensorboard --logdir <thesis>/IsaacLab/logs --bind_all` (laptop: `100.109.10.66:6006`) |
 | Attach to run | `tmux attach -t train` |
+
+## Module 02 — gripper build and geometry (Day 3, 2026-07-28)
+
+All run from `cd ~/Abdur_Rabbi_Thesis_updated/IsaacLab` with `conda activate isaaclab` first.
+
+| Purpose | Command | Log |
+|---|---|---|
+| Build + validate the merged USD | `./isaaclab.sh -p ../ur5_grasp/tools/make_ur5e_rhp12_usd.py --headless` | `logbook/02_make_ur5e_rhp12.log` |
+| Same, reusing the converted gripper | add `--skip_convert` | as above |
+| Visual check (gripper renders black) | drop `--headless` | — |
+| Nudge the flange mount | add `--mount_pos "0 0 0.005" --mount_rpy "0 0 0.7854"` | — |
+| Inspect cube geometry + instancing | `./isaaclab.sh -p ../ur5_grasp/tools/inspect_usd_geometry.py --headless --target cube` | `logbook/02_inspect_cube.log` |
+| Inspect gripper geometry + instancing | `... --target gripper` | `logbook/02_inspect_gripper.log` |
+| Measure the DexCube edge | `./isaaclab.sh -p ../ur5_grasp/tools/measure_dexcube_drop.py --headless` | `logbook/02_measure_dexcube.log` |

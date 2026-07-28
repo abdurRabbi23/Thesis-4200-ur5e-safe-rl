@@ -250,3 +250,179 @@ gets re-measured here against *these* gains.
 Robotiq 2F-85 stays rejected (§9): closed-loop 4-bar, passive pads transmit no force in PhysX.
 The archive proved this the expensive way and it is the single most valuable thing in that folder.
 
+---
+
+## SCOPE CHANGE — two selectable grippers (2026-07-28, Day 3)
+
+Requested: **one UR5e, two grippers** — RH-P12-RN and Robotiq 2F-85 — both really actuated
+(no weld), chosen at run time.
+
+Driver, as stated: **optionality plus comparability with the literature.** *Not* hardware —
+the lab does not require a 2F-85 for Layer 3. That matters, because it means the 2F-85 is a
+**bonus result, not the critical path.** RH-P12-RN remains the Layer 1 gripper.
+
+### What the §9 rejection does and does not say
+
+§9 rejects the 2F-85 *URDF route*. A URDF is a tree and cannot express the four-bar loop, so
+public 2F-85 URDFs break the loop and paper over it with `<mimic>` tags that Isaac Lab 2.3 does
+not honour (issue #2424). That is a statement about **URDF**, not about the gripper.
+
+A USD authored by NVIDIA has no tree restriction. So the rejection is **re-opened on one
+condition only**: that a shipped, already-coupled asset exists. `probe_gripper_assets.py`
+answers that with evidence, the same way STEP 2 settled the arm. Three outcomes, ranked:
+
+| Probe outcome | Route | Cost |
+|---|---|---|
+| `ur5e.usd` has a `Gripper` variant listing a Robotiq value | spawn with `variants={"Gripper": ...}` | ~1 h |
+| standalone 2F-85 USD on Nucleus | mount like the RH-P12-RN | ~4 h |
+| nothing found | coupled-tree drive: break the loop, drive all finger joints from ONE command via the real transmission ratio | ~1 day, and §9 stands until measured |
+
+**Timebox: one day.** Failure closes the 2F-85 with a header banner as a documented negative
+result (§5) — which is the second time this project would have earned that paragraph, and this
+time with a named cause rather than a weld.
+
+### Sequencing (agreed)
+
+1. RH-P12-RN to **sign-off** — pure tree, will work. Unchanged, still the next action.
+2. Build the **switch** while writing that cfg. Nearly free if designed in now, expensive to
+   retrofit later.
+3. *Then* the 2F-85, timeboxed.
+
+Layer 1 never waits on the 2F-85. If step 3 fails, Layer 1 is unaffected.
+
+### The switch — design decision
+
+**Chosen: two built USDs + a registry, selected by a `--gripper` flag.**
+Rejected: authoring a custom multi-value USD variant set of our own. Variants are the elegant
+answer but mean USD surgery on every rebuild; a dict costs nothing and is trivially inspectable.
+
+```
+ur5_grasp/robots/
+    ur5e_cfg.py            arm only          (done, signed off)
+    ur5e_rhp12_cfg.py      arm + RH-P12-RN
+    ur5e_robotiq_cfg.py    arm + 2F-85       (only if the probe/timebox succeeds)
+    __init__.py            GRIPPERS = {"rhp12": ..., "robotiq85": ...}
+```
+
+Each entry must carry **its own** measured values, never a shared constant:
+`cfg`, `TCP_OFFSET`, `finger_joint_names`, `open`/`closed` commands, `body_names` for the
+contact sensor. A single global `TCP_OFFSET` is the exact bug that would silently corrupt the
+second gripper's results.
+
+**Task ids stay separate per gripper** — `Isaac-Lift-Cube-UR5e-RHP12-v0`,
+`Isaac-Lift-Cube-UR5e-Robotiq85-v0` — each with its **own `experiment_name`**. §9 already
+records checkpoints being dumped on top of earlier results by a variant sharing a runner cfg.
+Two grippers doubles that risk.
+
+### Decision rules for the 2F-85 — written BEFORE the run
+
+| Symptom | Single knob | Threshold to act |
+|---|---|---|
+| Asset loads, fingers do not move on command | the joint **names** in the actuator regex | Print the real joint list first. Never guess a regex. |
+| Fingers move, cube is not held | measure **contact force at the pads**, not separation | Zero force with fingers visibly touching = the §9 failure reproducing. Stop, log, close. |
+| Loads as 2+ articulations | the nested articulation root | Same fix as the RH-P12 mount. One knob. |
+| Solver instability at high `num_envs` | `num_envs`, alone | Loop constraints cost solver iterations. Re-time before setting any training budget. |
+| Timebox hits 1 day with no pad force | scope | Close as negative result. Do **not** extend. Layer 1 does not need it. |
+
+### Open question for me to answer (not to be answered for me)
+
+The RH-P12-RN URDF has **4 revolute joints and 0 `mimic` tags** — verified 2026-07-28 by
+grepping our own copy, which independently confirms the archive's "pure tree" diagnosis.
+But the real RH-P12-RN is a **1-DOF** gripper: one Dynamixel drives both fingers through a
+mechanical coupling.
+
+So sim gives 4 independently drivable joints where hardware gives 1 command. If the RL policy
+is allowed to command all 4 freely, what exactly does a Layer 3 sim-to-real claim mean? And
+note this is the *same* coupling question as the 2F-85 — just on a gripper where it is easy.
+Decide the RH-P12 action space deliberately before the PPO baseline, not after.
+
+
+---
+
+## Day 3 (2026-07-28) — RH-P12-RN mounted, geometry measured, cube edge settled
+
+### Goal / success criterion
+
+Gripper on the arm as **one articulation**, and the pads shown by measurement — not by
+looking — to be able to close on the cube.
+
+### What was done
+
+| Step | Artefact | Outcome |
+|---|---|---|
+| 1 | `ur5_grasp/assets/rh_p12_rn/` | 7 files, 88 K, MD5-identical to archive. No USD, no numbers. |
+| 2 | `ur5_grasp/tools/make_ur5e_rhp12_usd.py` | written here; method from archive, values not |
+| 3 | `ur5_grasp/tools/inspect_usd_geometry.py` | diagnostic for instancing + bounds |
+| 4 | `ur5_grasp/tools/measure_dexcube_drop.py` | physical cube measurement |
+
+### Results — all re-measured in this folder
+
+**Topology.** 10 joints / 12 bodies, one articulation. Nested articulation root stripped at
+`/Robot/RHP12/rh_p12_rn_base`; fixed joint `wrist_3_link -> rh_p12_rn_base`.
+
+PhysX returns the gripper joints as `rh_l1, rh_p12_rn, rh_l2, rh_r2` — reordered by tree
+depth, **not** the order they were requested in. Never index gripper joints by assumed
+position when writing the ArticulationCfg.
+
+**Stroke sweep** (`logbook/02_make_ur5e_rhp12.log`):
+
+| q (rad) | origin gap (m) | face gap (m) | TCP from wrist (m) |
+|---|---|---|---|
+| 0.00 | 0.1145 | 0.1064 | 0.0767 |
+| 0.50 | 0.0749 | 0.0668 | 0.0968 |
+| 1.00 | 0.0216 | 0.0137 | 0.1049 |
+
+Pad reach from body origin: 0.0041 (r) + 0.0040 (l) = **0.0081 m**.
+
+**External validation.** Open clear opening **106.4 mm** against the ROBOTIS published stroke
+**106.0 mm** — error **+0.4 mm**. Source: <https://emanual.robotis.com/docs/en/platform/rh_p12_rn/>
+(stroke reduced 109 → 106 mm from 2019-11-04 for fingertip durability). This is now a permanent
+acceptance criterion in the script, not a comment.
+
+**Cube edge.** Raw **0.06000 m**, at env scale 0.8 **0.04800 m**. Measured by drop test —
+resting centre height × 2 — because USD introspection was ambiguous. Scaling exactly linear.
+
+### Two wrong diagnoses of my own, both caught
+
+1. **`size/2` is not the reach from the origin.** The AABB is not centred on the body origin
+   (that sits on the joint axis), so the pad reach must be the box **support**, not its
+   half-width. Symptoms: 92.4 mm open gap against a 106 mm datasheet, and an impossible
+   negative face gap at full close. Fixed; one knob; control (`origin_gap`, TCP) held
+   byte-identical across the re-run, proving the change was surgical.
+
+2. **"The gripper reference probably did not load."** It had loaded — 12 bodies. The real
+   cause is that `Usd.PrimRange` does not descend into **instance proxies**, and all 10
+   finger meshes are instances of `/__Prototype_1..10`. The per-mesh `displayColor` loop was
+   removed rather than fixed: proxies and prototypes are both read-only, and the ancestor
+   material binding already works — GUI confirms the hand renders black.
+
+### Archive findings that change decisions
+
+- **`TCP_OFFSET = 0.130` is invalidated.** Its stated justification — *"pad faces close to
+  0.0415 m against a 0.0412 m cube, delta +0.3 mm, a true flat-pad parallel grip"* — rests on
+  a cube that is really **0.048 m**. Pads cannot close to 0.0415 m around a 0.048 m cube. Do
+  not carry 0.130 over. Measure the TCP against a real grasp here.
+- The archive's **origin-gap table replicates exactly to 4 dp**, so the *geometry* work was
+  sound. It is the *calibration against the cube* that fails. Useful distinction: reuse its
+  method, reject its constants.
+
+### Prediction banked for the grasp test
+
+Interpolating our face-gap column at the measured 0.0480 m cube: **pads stall at q ≈ 0.69.**
+
+- stall much **later** → cube being crushed, or slipping through
+- stall much **earlier** → wedged on the curved proximal `r1`/`l1` links (the §9 failure mode
+  that survives a static hold test and fails under lift accelerations)
+
+### Caveat on the measurements
+
+The pad reach comes from an axis-aligned box around a **curved** fingertip, so it
+over-approximates. That biases the open gap small (conservative) but the closed gap small too
+(optimistic). The closed-gap check is therefore the weakest of the seven — do not lean on it.
+
+### Next
+
+Write `ur5_grasp/robots/ur5e_rhp12_cfg.py` (arm actuators from the measured `ur5e_cfg.py`,
+elbow 1320 — not a blanket 800), then the grasp test against the q ≈ 0.69 prediction.
+The 4-drivable-joints vs 1-DOF-hardware question above is still unanswered and must be
+settled before the PPO baseline.

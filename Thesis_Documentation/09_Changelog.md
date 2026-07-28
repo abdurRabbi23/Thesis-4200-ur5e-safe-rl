@@ -48,3 +48,23 @@ working assumption: the lift-env **table is Isaac Lab stock** (`lift_env_cfg.py:
 SeattleLabTable at `[0.5, 0, 0]`), not previous-attempt work — it is inherited by subclassing
 `LiftEnvCfg` and requires no import. Also recorded that the archive's Layer 1 headline numbers
 were measured with a proximity weld, not a working gripper, per its own `00_INDEX.md` Day 17.
+
+2026-07-28 — `logbook/02_grasp_env.md`, `run_log.md`, `logbook/00_INDEX.md`,
+`logbook/HANDOFF_next.md`, `06_Results_and_Experiments.md`, `07_Troubleshooting.md`,
+`10_Command_Reference.md` — Day 3 written up: RH-P12-RN mounted as one articulation, stroke
+measured, DexCube edge settled by drop test.
+
+Two corrections propagated through every file that carried them:
+
+1. **The DexCube edge is 0.06000 m raw / 0.04800 m at env scale 0.8**, measured by drop test
+   (resting centre height × 2). The previous attempt's 0.0412 m is wrong by 8.5 mm raw. A
+   prediction of 0.0515 m made *in this session* was also refuted — recorded rather than
+   quietly dropped.
+2. **The archive's `TCP_OFFSET = 0.130` is invalidated.** Its justification ("pad faces close
+   to 0.0415 m against a 0.0412 m cube, delta +0.3 mm") is arithmetically impossible against a
+   0.048 m cube. Its *origin-gap table* replicates here to 4 dp, so the geometry work was
+   sound; it is the calibration against the cube that fails. Method reusable, constants not.
+
+Two new landmines added to `07_Troubleshooting.md`: `Usd.PrimRange` skipping instance proxies,
+and AABB half-size being mistaken for reach from a body origin. Both were wrong diagnoses made
+and caught within this session; both are recorded with the symptom that exposed them.

@@ -1,0 +1,83 @@
+==============================================================================
+INSPECT USD GEOMETRY   target=gripper
+==============================================================================
+usd    : /home/mte/Abdur_Rabbi_Thesis_updated/ur5_grasp/assets/rh_p12_rn.usd
+report : /home/mte/Abdur_Rabbi_Thesis_updated/logbook/02_inspect_gripper.log
+
+default prim : /rh_p12_rn  (type Xform)
+
+--- 1. Traversal comparison (this is the colour-bug diagnosis) ---
+    prims  without instance proxies : 24
+    prims  WITH    instance proxies : 44
+    Gprims without instance proxies : 0
+    Gprims WITH    instance proxies : 10
+    Meshes WITH    instance proxies : 10
+    prims marked instanceable       : 10
+    prims that ARE instances        : 10
+      instance /rh_p12_rn/rh_p12_rn_base/visuals  -> prototype /__Prototype_7
+      instance /rh_p12_rn/rh_p12_rn_base/collisions  -> prototype /__Prototype_5
+      instance /rh_p12_rn/rh_p12_rn_l1/visuals  -> prototype /__Prototype_4
+      instance /rh_p12_rn/rh_p12_rn_l1/collisions  -> prototype /__Prototype_9
+      instance /rh_p12_rn/rh_p12_rn_l2/visuals  -> prototype /__Prototype_3
+      instance /rh_p12_rn/rh_p12_rn_l2/collisions  -> prototype /__Prototype_1
+      instance /rh_p12_rn/rh_p12_rn_r1/visuals  -> prototype /__Prototype_6
+      instance /rh_p12_rn/rh_p12_rn_r1/collisions  -> prototype /__Prototype_2
+      instance /rh_p12_rn/rh_p12_rn_r2/visuals  -> prototype /__Prototype_8
+      instance /rh_p12_rn/rh_p12_rn_r2/collisions  -> prototype /__Prototype_10
+
+    CONFIRMED: the geometry is reachable ONLY through instance proxies.
+    This is why colour_gripper() found 0 renderable prims. Note that instance
+    proxies are READ-ONLY — you cannot author a displayColor or a material
+    binding on them. The fix is to author on the PROTOTYPE, or to clear the
+    instanceable flag on the referencing prims before editing.
+
+--- 2. Whole-asset bounds, by purpose ---
+    purpose default  : 0.05400 x 0.15073 x 0.11650
+    purpose render   : EMPTY
+    purpose proxy    : EMPTY
+    purpose guide    : 0.05400 x 0.15073 x 0.11650
+    default+render     : 0.05400 x 0.15073 x 0.11650   <- what make_ur5e_rhp12_usd.py used
+
+--- 3. Per-prim geometry (points are ground truth; extent is only a hint) ---
+    /rh_p12_rn/rh_p12_rn_base/visuals/base/mesh
+      type=Mesh  purpose=default  instance-proxy
+      extent attr  : 54.00000 x 80.00000 x 59.00000
+      MESH POINTS  : 54.00000 x 80.00000 x 59.00000   (1488 verts)
+    /rh_p12_rn/rh_p12_rn_base/collisions/base/mesh
+      type=Mesh  purpose=guide  instance-proxy CollisionAPI
+      extent attr  : 54.00000 x 80.00000 x 59.00000
+      MESH POINTS  : 54.00000 x 80.00000 x 59.00000   (1488 verts)
+    /rh_p12_rn/rh_p12_rn_l1/visuals/l1/mesh
+      type=Mesh  purpose=default  instance-proxy
+      extent attr  : 26.00000 x 68.07946 x 61.44242
+      MESH POINTS  : 26.00000 x 68.07946 x 61.44242   (372 verts)
+    /rh_p12_rn/rh_p12_rn_l1/collisions/l1/mesh
+      type=Mesh  purpose=guide  instance-proxy CollisionAPI
+      extent attr  : 26.00000 x 68.07946 x 61.44242
+      MESH POINTS  : 26.00000 x 68.07946 x 61.44242   (372 verts)
+    /rh_p12_rn/rh_p12_rn_l2/visuals/l2/mesh
+      type=Mesh  purpose=default  instance-proxy
+      extent attr  : 26.00000 x 21.90000 x 54.77433
+      MESH POINTS  : 26.00000 x 21.90000 x 54.77433   (456 verts)
+    /rh_p12_rn/rh_p12_rn_l2/collisions/l2/mesh
+      type=Mesh  purpose=guide  instance-proxy CollisionAPI
+      extent attr  : 26.00000 x 21.90000 x 54.77433
+      MESH POINTS  : 26.00000 x 21.90000 x 54.77433   (456 verts)
+    /rh_p12_rn/rh_p12_rn_r1/visuals/r1/mesh
+      type=Mesh  purpose=default  instance-proxy
+      extent attr  : 26.00000 x 68.07946 x 61.44242
+      MESH POINTS  : 26.00000 x 68.07946 x 61.44242   (372 verts)
+    /rh_p12_rn/rh_p12_rn_r1/collisions/r1/mesh
+      type=Mesh  purpose=guide  instance-proxy CollisionAPI
+      extent attr  : 26.00000 x 68.07946 x 61.44242
+      MESH POINTS  : 26.00000 x 68.07946 x 61.44242   (372 verts)
+    /rh_p12_rn/rh_p12_rn_r2/visuals/r2/mesh
+      type=Mesh  purpose=default  instance-proxy
+      extent attr  : 26.00000 x 21.90000 x 54.77433
+      MESH POINTS  : 26.00000 x 21.90000 x 54.77433   (456 verts)
+    /rh_p12_rn/rh_p12_rn_r2/collisions/r2/mesh
+      type=Mesh  purpose=guide  instance-proxy CollisionAPI
+      extent attr  : 26.00000 x 21.90000 x 54.77433
+      MESH POINTS  : 26.00000 x 21.90000 x 54.77433   (456 verts)
+
+[report saved to /home/mte/Abdur_Rabbi_Thesis_updated/logbook/02_inspect_gripper.log]

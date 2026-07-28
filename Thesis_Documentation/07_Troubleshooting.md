@@ -194,3 +194,65 @@ gain from a measured torque.
 Caution: raising `k` alone lowers the damping ratio. Steady-state error does not care, so the
 prediction holds — but watch the step trace for ringing, and treat damping as the *next* single
 knob, never the same edit.
+
+---
+
+## `Usd.PrimRange` silently skips instance proxies (2026-07-28)
+
+**Symptom.** A traversal that walks an imported asset to count or author geometry finds
+**zero** renderable prims, while the asset has plainly loaded — correct body count, correct
+joint count, mount joint resolved. The script reports success and its own warning text blames
+a failed reference.
+
+**Cause.** `Usd.PrimRange(prim)` uses the default predicate, which does **not** descend into
+instance proxies. Both Isaac's shipped props and Isaac Lab's URDF converter mark geometry
+`instanceable` by default, so the meshes live behind instances pointing at `/__Prototype_N`
+and the walk never reaches them.
+
+Measured here with `ur5_grasp/tools/inspect_usd_geometry.py`:
+
+| Asset | Gprims without proxies | Gprims with proxies |
+|---|---|---|
+| `rh_p12_rn.usd` (URDF-converted) | 0 | 10 |
+| `dex_cube_instanceable.usd` (Isaac prop) | 0 | 2 |
+
+**Root cause, named.** `ur5_grasp/assets/config.yaml`, written by the converter, records
+`make_instanceable: true` — that is the `UrdfConverterCfg` default. Setting it `False` at
+conversion time is the cleanest fix if per-mesh authoring is ever genuinely needed; it costs
+memory at high `num_envs`, so do not change it without a reason.
+
+**Fix.** Traverse with `Usd.PrimRange(root, Usd.TraverseInstanceProxies())` when you need to
+*read* or *count*. To **write**, note that instance proxies and prototypes are both
+**read-only** — you must either clear the `instanceable` flag on the referencing prims first,
+or author from an ancestor **outside** the prototype. Binding a material at the subtree root
+with `strongerThanDescendants` is the cheap route and does reach the proxies at render time;
+that is how the gripper colour works, confirmed visually 2026-07-28.
+
+**Why it bites.** `BBoxCache` resolves *through* instancing correctly, so bounds measurements
+are unaffected — which makes the failure look inconsistent and invites a wrong diagnosis. It
+cost one here.
+
+---
+
+## An AABB half-size is not the reach from a body origin (2026-07-28)
+
+**Symptom.** A measured gripper clear opening of 92.4 mm against a published 106 mm stroke,
+and a physically impossible **negative** pad separation (−0.0004 m) at full close.
+
+**Cause.** The code took the link's axis-aligned bounding box, halved its size, and projected
+that onto the closing direction. `size / 2` is the reach from the origin only if the box is
+**centred** on the origin. It is not: a URDF link's origin sits on its joint axis, typically
+well off the geometric centre.
+
+**Fix.** Use the box **support** in the direction of interest — take each coordinate from the
+max corner where the direction component is positive and the min corner where it is negative:
+
+    s(d) = Σᵢ dᵢ · (dᵢ > 0 ? maxᵢ : minᵢ)
+
+After the fix: open clear opening 106.4 mm against a published 106.0 mm (+0.4 mm), closed gap
++0.0137 m. Control quantities (body-origin gap, TCP offset) were byte-identical across the
+re-run, which is what proved the change was surgical.
+
+**Method note.** An AABB around a *curved* fingertip over-approximates, which biases an open
+gap small (conservative) but a closed gap small too (optimistic). Do not lean on a passing
+closed-gap check.

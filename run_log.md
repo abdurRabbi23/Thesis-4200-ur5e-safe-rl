@@ -38,3 +38,41 @@ Format: `YYYY-MM-DD | Day N | module | what happened | result / where logged`
 2026-07-27 | Day 2 | 02_grasp_env | Archive inspected on request ("robot with a table"). **The table is Isaac Lab stock** — `lift_env_cfg.py:45`, SeattleLabTable at [0.5,0,0]; the archive inherited it via `LiftEnvCfg` and so will we. Nothing to import. Archive's own work is the gripper; `ur5e_rhp12.usd` is a 2 KB reference stub, not a model. Archive `00_INDEX.md` Day 17: its Layer 1 headline rests on a **proximity weld**, cPPO never run on RH-P12-RN. | Decision: copy `rh_p12_rn/` URDF+meshes as third-party source, rebuild USD + mount here, re-measure every geometric number
 
 2026-07-27 | Day 2 | 02_grasp_env | **ARM SIGNED OFF.** UR5e ArticulationCfg loads clean: 6 joints correct order, 7 bodies, fixed base, effort 150/150/150/28/28/28 N·m and vel 3.142 rad/s both matching the UR5e datasheet, no ArticulationRootAPI error, home pose held. EE at x=0.433 y=0.133 z=0.473 m. | ✅ Next: gripper (RH-P12-RN)
+
+**2026-07-28 (Day 3)** — Scope change agreed: **one UR5e, two selectable grippers** (RH-P12-RN +
+Robotiq 2F-85), both really actuated. Driver is optionality + literature comparability, *not* lab
+hardware — so the 2F-85 is a bonus, RH-P12-RN stays the Layer 1 critical path. §9's rejection
+re-opened on one condition: a shipped, already-coupled USD must exist. Wrote
+`ur5_grasp/scripts/probe_gripper_assets.py` (not yet run) — checks the stock `ur5e.usd` for a
+`Gripper` variant set, lists Nucleus gripper folders, and inspects any candidate's variants, with
+the ur10e path as control. Switch design decided: two built USDs + a `GRIPPERS` registry behind a
+`--gripper` flag; separate task ids and `experiment_name` per gripper. 2F-85 timeboxed to ONE day.
+Verified by grep on our own copy: RH-P12-RN URDF has 4 revolute joints, **0 mimic tags** — pure
+tree, independently confirming the archive diagnosis. Open question logged: sim gives 4 drivable
+finger joints where the real RH-P12-RN is 1-DOF. Detail in `logbook/02_grasp_env.md`.
+
+2026-07-28 | Day 3 | 02_grasp_env | STEP 1 — copied `ur5_grasp/assets/rh_p12_rn/` from the archive as third-party source: 7 files, 88 K (URDF + LICENSE_ROBOTIS + 5 STL), MD5-identical. **No `.usd` and no calibrated number copied.** | done
+
+2026-07-28 | Day 3 | 02_grasp_env | STEP 2 — read the archive's `make_ur5e_rhp12_usd.py` for METHOD only, then wrote our own `ur5_grasp/tools/make_ur5e_rhp12_usd.py`. Method carried over: convex-decomposition colliders, `Gripper=None` variant, strip the nested articulation root, fixed mount joint. Departures: no borrowed numbers, cube edge measured not hardcoded, PASS/FAIL criteria written into the script, report to `logbook/`. | script written
+
+2026-07-28 | Day 3 | 02_grasp_env | STEP 3 run 1 — build + validate. **Mount works: 10 joints / 12 bodies, ONE articulation**, nested articulation root stripped at `/Robot/RHP12/rh_p12_rn_base`. Stroke sweep monotonic, origin gap 0.1145 → 0.0216 m — **matches the archive's table to 4 dp**, an independent replication of the geometry. | PASS on topology; two measurements wrong (below)
+
+2026-07-28 | Day 3 | 02_grasp_env | **My bug, not Isaac's.** `measure_pad_half_thickness` used `size/2` and projected it — correct only if the AABB is centred on the body origin, which it is not (the origin sits on the joint axis). Symptoms: open clear opening 92.4 mm against a published 106 mm, and an impossible **negative** face gap (−0.0004 m) at full close. | Diagnosed before re-running
+
+2026-07-28 | Day 3 | 02_grasp_env | STEP 3 run 2 — **one knob**: AABB half-size → true AABB support, and the two pads measured in OPPOSITE directions. Predictions recorded before the run. | **7/7 PASS.** face_gap q=0 **0.1064 m** (predicted 0.1067), q=1.00 **0.0137 m** (predicted 0.0138), pad reach 0.0041+0.0040 = **0.0081 m** (predicted 0.0078). Control held: origin_gap and TCP byte-identical to run 1. Log: `logbook/02_make_ur5e_rhp12.log`
+
+2026-07-28 | Day 3 | 02_grasp_env | **External validation.** Open clear opening **106.4 mm** vs the ROBOTIS published stroke **106.0 mm** (+0.4 mm). Source: emanual.robotis.com/docs/en/platform/rh_p12_rn/ (stroke cut 109 → 106 mm from 2019-11-04 for fingertip durability). First geometry number in this thesis validated against a source outside the project. | ✅ datasheet check added as a permanent acceptance criterion
+
+2026-07-28 | Day 3 | 02_grasp_env | Wrote `ur5_grasp/tools/inspect_usd_geometry.py` — one diagnostic for two open problems, because both are USD **instancing** questions. Walks a stage with and without `Usd.TraverseInstanceProxies()` and reports bounds per purpose, extent hints and raw mesh points. | run on cube + gripper
+
+2026-07-28 | Day 3 | 02_grasp_env | **Cube edge settled by physical measurement.** USD reading was ambiguous (visuals-after-transform 0.060, collision extent 0.060, but `purpose=guide` gave a nonsensical 0.0036). Drop test on a plane at z=0: raw cube rests at **0.03000 m** → edge **0.06000 m**; at env scale 0.8 rests at 0.02400 → **0.04800 m**. Scaling exactly linear. Both at rest (|v| = 0.00012 m/s). | **The archive's 0.0412 m is WRONG by 8.5 mm (raw).** My own prior prediction of 0.0515 also refuted. Log: `logbook/02_measure_dexcube.log`
+
+2026-07-28 | Day 3 | 02_grasp_env | **Consequence — archive TCP_OFFSET 0.130 is invalidated.** Its justification ("pad faces close to 0.0415 m against a 0.0412 m cube, delta +0.3 mm — a true flat-pad parallel grip") is built on a cube that is really 0.048 m. Pads cannot close to 0.0415 around a 0.048 m cube. **Do not carry 0.130 over.** Concrete vindication of §14; worth a paragraph as a negative result. | archive grasp calibration rejected
+
+2026-07-28 | Day 3 | 02_grasp_env | **Grasp-test prediction derivable now.** Interpolating our own face_gap column at the measured 0.0480 m cube: pads should stall at **q ≈ 0.69**. Later = crushing or slipping; earlier = wedging on the curved r1/l1 links. Written before the run. | prediction banked
+
+2026-07-28 | Day 3 | 02_grasp_env | **Second wrong diagnosis of my own, caught.** `colour_gripper` reported "0 renderable prims" and its warning blamed a failed reference. `inspect_usd_geometry.py` showed the truth: all 10 finger meshes are USD **instances** (`/__Prototype_1..10`) and `Usd.PrimRange` does not descend into instance proxies. Confirmed the same for the DexCube (2 instances). | GUI check: **hand renders black** — the ancestor material binding already reaches the proxies, because it is authored outside the prototypes
+
+2026-07-28 | Day 3 | 02_grasp_env | Removed the dead per-mesh `displayColor` loop rather than fixing it — instance proxies and prototypes are both READ-ONLY, and the root binding already works. Mesh count now taken through `TraverseInstanceProxies()`, so a zero really would mean a failed reference. | script corrected; no re-run needed
+
+2026-07-28 | Day 3 | infra | **New landmine.** `Usd.PrimRange(prim)` silently skips instance proxies. Any traversal that authors or counts geometry on an imported asset will find nothing and report success. Both Isaac props and URDF-converted assets are instanced by default. | logged for `07_Troubleshooting.md`

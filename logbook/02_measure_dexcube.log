@@ -1,0 +1,30 @@
+==============================================================================
+MEASURE DexCube EDGE BY DROP TEST
+==============================================================================
+cube USD     : https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/5.1/Isaac/Props/Blocks/DexCube/dex_cube_instanceable.usd
+drop height  : 0.15 m
+settle steps : 600
+
+PREDICTIONS (written before the run):
+  if this rebuild's USD reading is right : raw edge 0.0600 m,
+       resting centre 0.0300 m
+  if the previous attempt was right      : raw edge 0.0515 m,
+       resting centre 0.0257 m
+
+--- measured at rest ---
+    cube                    centre z (m)  |vel| (m/s)   -> edge (m)
+    raw (scale 1.0)              0.03000      0.00012       0.06000
+    env (scale 0.8)              0.02400      0.00012       0.04800
+
+--- verdict ---
+    raw edge measured           : 0.06000 m
+    vs this rebuild (0.0600)     : MATCH   (err +0.0 mm)
+    vs previous attempt (0.0515) : no   (err +8.5 mm)
+
+    RESULT: the USD reading in this rebuild is correct. The previous attempt's
+    0.0412 m was wrong, and any archive number derived from it is suspect.
+
+    consistency: raw x 0.8 = 0.04800 vs measured 0.04800  (err -0.0 mm)
+
+    USE THIS NUMBER: the env-scale edge above is what the gripper must close on.
+    Quote it with this command in Thesis_Documentation/06_Results_and_Experiments.md.

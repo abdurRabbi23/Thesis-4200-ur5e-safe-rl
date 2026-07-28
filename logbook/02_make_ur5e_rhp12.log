@@ -1,0 +1,72 @@
+==============================================================================
+BUILD + VALIDATE   ur5e_rhp12.usd    (UR5e + ROBOTIS RH-P12-RN)
+==============================================================================
+urdf        : /home/mte/Abdur_Rabbi_Thesis_updated/ur5_grasp/assets/rh_p12_rn/rh_p12_rn.urdf
+arm USD     : https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/5.1/Isaac/Robots/UniversalRobots/ur5e/ur5e.usd
+cube USD    : https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/5.1/Isaac/Props/Blocks/DexCube/dex_cube_instanceable.usd
+output USD  : /home/mte/Abdur_Rabbi_Thesis_updated/ur5_grasp/assets/ur5e_rhp12.usd
+
+--- 1. Converting URDF -> USD ---
+    skipped (reusing /home/mte/Abdur_Rabbi_Thesis_updated/ur5_grasp/assets/rh_p12_rn.usd)
+
+--- 2. Authoring the merged USD ---
+    mount pos=[0.0, 0.0, 0.0]  rpy=[0.0, 0.0, 0.0]  (in the wrist_3_link frame)
+    variant Physics -> PhysX
+    variant Gripper -> None
+    variant Sensor -> None
+    disabled nested articulation root at /Robot/RHP12/rh_p12_rn_base
+    wrist prim : /Robot/wrist_3_link
+    base  prim : /Robot/RHP12/rh_p12_rn_base
+    added fixed joint /Robot/rhp12_mount_joint  (wrist_3_link -> rh_p12_rn_base)
+    gripper colour rgb=[0.02, 0.02, 0.02] -> displayColor on 0 renderable prims
+    !! WARNING: zero renderable prims under /Robot/RHP12. The traversal is the
+       problem, not the material — the gripper reference probably did not load.
+    wrote /home/mte/Abdur_Rabbi_Thesis_updated/ur5_grasp/assets/ur5e_rhp12.usd
+
+--- 3. Validating + measuring ---
+    loaded as a single articulation.
+    num joints : 10   (expected 10)
+    joint names: ['shoulder_pan_joint', 'shoulder_lift_joint', 'elbow_joint', 'wrist_1_joint', 'wrist_2_joint', 'wrist_3_joint', 'rh_l1', 'rh_p12_rn', 'rh_l2', 'rh_r2']
+    num bodies : 12   (expected 12)
+    body names : ['base_link', 'shoulder_link', 'upper_arm_link', 'forearm_link', 'wrist_1_link', 'wrist_2_link', 'wrist_3_link', 'rh_p12_rn_base', 'rh_p12_rn_l1', 'rh_p12_rn_r1', 'rh_p12_rn_l2', 'rh_p12_rn_r2']
+    DexCube raw bounds (m): 0.06000 x 0.06000 x 0.06000
+    DexCube edge at scale 0.8: 0.04800 m
+
+    --- gripper stroke sweep ---
+      q(rad)   origin_gap(m)   reach_r(m)   reach_l(m)   face_gap(m)   tcp_from_wrist(m)
+       0.00       0.1145      0.0041      0.0040      0.1064          0.0767
+       0.10       0.1083      0.0040      0.0040      0.1002          0.0815
+       0.20       0.1012      0.0040      0.0040      0.0931          0.0859
+       0.30       0.0932      0.0040      0.0040      0.0851          0.0900
+       0.40       0.0844      0.0040      0.0041      0.0763          0.0936
+       0.50       0.0749      0.0040      0.0041      0.0668          0.0968
+       0.60       0.0656      0.0039      0.0039      0.0578          0.0993
+       0.70       0.0551      0.0039      0.0039      0.0472          0.1015
+       0.80       0.0442      0.0039      0.0039      0.0363          0.1032
+       0.90       0.0330      0.0039      0.0039      0.0251          0.1044
+       1.00       0.0216      0.0039      0.0039      0.0137          0.1049
+
+    --- acceptance criteria (written before the run) ---
+      [PASS]  topology is 10 joints / 12 bodies
+      [PASS]  the pads actually move over the stroke (>10 mm change)
+      [PASS]  separation shrinks monotonically — no jump or bounce
+      [PASS]  open face gap clears the cube (0.1064 > 0.0480 m)
+      [PASS]  closed face gap is under the cube (0.0137 < 0.0480 m)
+      [PASS]  open face gap matches the datasheet stroke (0.1064 vs 0.1060 +/- 0.003 m, error +0.4 mm)
+      [PASS]  closed face gap is physically possible (>= 0, got 0.0137 m)
+
+    RESULT: PASS — the pads sweep from clear of the cube to closed past it, so a
+    flat parallel grip is geometrically possible.
+
+    WHAT THIS DOES NOT SHOW
+    A free-space sweep says nothing about whether a grasp HOLDS. The known failure
+    mode is the cube wedging on the curved proximal r1/l1 links: that survives a
+    static hold test and fails under lift accelerations. The next script has to
+    close on the cube and check the pads stall at the cube width, not wider.
+
+    TCP OFFSET: read tcp_from_wrist at q=0.00 above as the STARTING value for the
+    env's ee_frame OffsetCfg. It is a starting value, not the answer — the pad
+    midpoint travels 0.0282 m over the stroke, so the
+    TCP is not a fixed point. Calibrate it against a real grasp before trusting it.
+
+[report saved to /home/mte/Abdur_Rabbi_Thesis_updated/logbook/02_make_ur5e_rhp12.log]
