@@ -1,0 +1,497 @@
+[3gH    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H    H[INFO] Using python from: /home/mte/miniconda3/envs/isaaclab/bin/python
+[INFO][AppLauncher]: Using device: cuda:0
+[INFO][AppLauncher]: Loading experience file: /home/mte/Abdur_Rabbi_Thesis_updated/IsaacLab/apps/isaaclab.python.kit
+[Warning] [simulation_app.simulation_app] Modules: ['omni.kit_app'] were loaded before SimulationApp was started and might not be loaded correctly.
+[Warning] [simulation_app.simulation_app] Please check to make sure no extra omniverse or pxr modules are imported before the call to SimulationApp(...)
+Loading user config located at: '/home/mte/miniconda3/envs/isaaclab/lib/python3.11/site-packages/omni/data/Kit/Isaac-Sim/5.1/user.config.json'
+[Info] [carb] Logging to file: /home/mte/miniconda3/envs/isaaclab/lib/python3.11/site-packages/omni/logs/Kit/Isaac-Sim/5.1/kit_20260728_135613.log
+[0.032s] [ext: omni.kit.async_engine-0.0.3] startup
+[0.082s] [ext: omni.metrics.core-0.0.3] startup
+[0.082s] [ext: omni.client.lib-1.1.0] startup
+[0.091s] [ext: omni.blobkey-1.1.2] startup
+[0.091s] [ext: omni.stats-1.0.1] startup
+[0.092s] [ext: omni.datastore-0.0.0] startup
+[0.095s] [ext: omni.client-1.3.0] startup
+[0.149s] [ext: omni.ujitso.default-1.0.0] startup
+[0.150s] [ext: omni.hsscclient-1.1.2] startup
+[0.153s] [ext: omni.gpu_foundation.shadercache.vulkan-1.0.0] startup
+[0.155s] [ext: omni.assets.plugins-0.0.0] startup
+[0.156s] [ext: omni.gpu_foundation-0.0.0] startup
+[0.160s] [ext: carb.windowing.plugins-1.0.0] startup
+[0.164s] [ext: omni.kit.renderer.init-0.0.0] startup
+2026-07-28T07:56:13Z [322ms] [Warning] [gpu.foundation.plugin] Skipping unsupported non-NVIDIA GPU: Intel(R) Graphics (RPL-S)
+2026-07-28T07:56:13Z [322ms] [Warning] [gpu.foundation.plugin] Skipping unsupported non-NVIDIA GPU: Intel(R) Graphics (RPL-S)
+
+|---------------------------------------------------------------------------------------------|
+| Driver Version: 580.173.02    | Graphics API: Vulkan
+|=============================================================================================|
+| GPU | Name                             | Active | LDA | GPU Memory | Vendor-ID | LUID       |
+|     |                                  |        |     |            | Device-ID | UUID       |
+|     |                                  |        |     |            | Bus-ID    |            |
+|---------------------------------------------------------------------------------------------|
+| 0   | NVIDIA GeForce RTX 5090          | Yes: 0 |     | 32853   MB | 10de      | 0          |
+|     |                                  |        |     |            | 2b85      | 578d95f1.. |
+|     |                                  |        |     |            | 1         |            |
+|---------------------------------------------------------------------------------------------|
+| 1   | Intel(R) Graphics (RPL-S)        |        |     | 48076   MB | 8086      | 0          |
+|     |                                  |        |     |            | a780      | 868080a7.. |
+|     |                                  |        |     |            | 0         |            |
+|=============================================================================================|
+| OS: 22.04.5 LTS (Jammy Jellyfish) ubuntu, Version: 22.04.5, Kernel: 6.8.0-136-generic
+| XServer Vendor: The X.Org Foundation, XServer Version: 12101004 (1.21.1.4)
+| Processor: Intel(R) Core(TM) i9-14900K
+| Bare Metal Cores: 24 | Bare Metal Logical Cores: 48
+| Available Cores:  32 
+|---------------------------------------------------------------------------------------------|
+| Total Memory (MB): 64102 | Free Memory: 54216
+| Total Page/Swap (MB): 13741 | Free Page/Swap: 13741
+|---------------------------------------------------------------------------------------------|
+2026-07-28T07:56:13Z [565ms] [Warning] [gpu.foundation.plugin] PCIe link width current (8) and maximum (16) for device 0 don't match.
+2026-07-28T07:56:13Z [565ms] [Warning] [gpu.foundation.plugin] IOMMU is enabled.
+2026-07-28T07:56:13Z [565ms] [Warning] [gpu.foundation.plugin] Detected IOMMU is enabled. Running CUDA peer-to-peer bandwidth and latency validation.
+Unidirectional P2P=Enabled Bandwidth (P2P Writes) Matrix (GB/s)
+   D\D     0 
+     0 1522.90 
+P2P=Enabled Latency (P2P Writes) Matrix (us)
+   GPU     0 
+     0   2.08 
+
+   CPU     0 
+     0   2.45 
+[0.709s] [ext: omni.materialx.libs-1.0.7] startup
+[0.714s] [ext: omni.usd.config-1.0.6] startup
+[0.716s] [ext: omni.gpucompute.plugins-0.0.0] startup
+[0.716s] [ext: omni.usd.libs-1.0.1] startup
+[0.765s] [ext: omni.mdl-56.0.3] startup
+[0.821s] [ext: omni.iray.libs-0.0.0] startup
+[0.826s] [ext: omni.mdl.neuraylib-0.2.12] startup
+[0.828s] [ext: omni.kit.usd.mdl-1.1.4] startup
+[0.891s] [ext: omni.kit.telemetry-0.5.2] startup
+[0.912s] [ext: omni.kit.pipapi-0.0.0] startup
+[0.913s] [ext: omni.kit.loop-isaac-1.3.7] startup
+[0.915s] [ext: omni.kit.test-2.0.1] startup
+[0.947s] [ext: omni.appwindow-1.1.10] startup
+[1.106s] [ext: omni.kit.renderer.core-1.1.0] startup
+[3.690s] [ext: omni.kit.renderer.capture-0.0.0] startup
+[3.692s] [ext: omni.kit.renderer.imgui-2.0.5] startup
+[3.730s] [ext: omni.ui-2.26.18] startup
+[3.736s] [ext: omni.kit.mainwindow-1.0.3] startup
+[3.736s] [ext: carb.audio-0.1.0] startup
+[3.739s] [ext: omni.uiaudio-1.0.0] startup
+[3.739s] [ext: omni.kit.uiapp-0.0.0] startup
+[3.739s] [ext: omni.usd.schema.metrics.assembler-107.3.1] startup
+[3.741s] [ext: omni.usd.schema.audio-0.0.0] startup
+[3.743s] [ext: omni.usd_resolver-1.0.0] startup
+[3.745s] [ext: omni.usd.core-1.5.3] startup
+[3.746s] [ext: omni.usd.schema.render_settings.rtx-0.0.0] startup
+[3.759s] [ext: omni.usd.schema.anim-0.0.0] startup
+[3.770s] [ext: omni.usd.schema.physx-107.3.18] startup
+[3.789s] [ext: isaacsim.robot.schema-3.5.1] startup
+[3.793s] [ext: omni.usd.schema.omni_lens_distortion-0.0.0] startup
+[3.793s] [ext: omni.usd.schema.omnigraph-1.0.0] startup
+[3.796s] [ext: omni.usd.schema.semantics-0.0.0] startup
+[3.797s] [ext: omni.usd.schema.geospatial-0.0.0] startup
+[3.799s] [ext: omni.kit.window.popup_dialog-2.0.24] startup
+[3.802s] [ext: omni.activity.core-1.0.3] startup
+[3.803s] [ext: omni.kit.widget.nucleus_connector-2.0.1] startup
+[3.804s] [ext: omni.kit.usd_undo-0.1.8] startup
+[3.804s] [ext: omni.graph.exec-0.9.6] startup
+[3.804s] [ext: omni.kit.actions.core-1.0.0] startup
+[3.805s] [ext: usdrt.scenegraph-7.6.1] startup
+[3.826s] [ext: omni.resourcemonitor-107.0.1] startup
+[3.827s] [ext: omni.kit.exec.core-0.13.4] startup
+[3.828s] [ext: omni.timeline-1.0.14] startup
+[3.830s] [ext: omni.kit.commands-1.4.10] startup
+[3.832s] [ext: omni.kit.audiodeviceenum-1.0.2] startup
+[3.832s] [ext: omni.hydra.usdrt_delegate-7.5.1] startup
+[3.836s] [ext: omni.hydra.scene_delegate-0.3.4] startup
+[3.839s] [ext: omni.usd-1.13.10] startup
+2026-07-28T07:56:16Z [3,829ms] [Warning] [omni.usd.audio] failed to subscribe to stage events
+[3.852s] [ext: omni.kit.asset_converter-4.1.4] startup
+[3.858s] [ext: omni.usd.schema.omniscripting-1.0.0] startup
+[3.860s] [ext: omni.usd.schema.omni_sensors-0.0.0] startup
+[3.860s] [ext: omni.index.libs-380600.5717.0] startup
+[3.860s] [ext: omni.volume-0.5.2] startup
+[3.862s] [ext: omni.ujitso.client-0.0.0] startup
+[3.862s] [ext: omni.index-1.0.1] startup
+[3.863s] [ext: omni.hydra.rtx.shadercache.vulkan-1.0.0] startup
+[3.863s] [ext: omni.hydra.rtx-1.0.0] startup
+2026-07-28T07:56:16Z [3,857ms] [Warning] [omni.log] Source: omni.hydra was already registered.
+[3.883s] [ext: omni.kit.notification_manager-1.0.10] startup
+[3.884s] [ext: omni.kit.clipboard-1.0.5] startup
+[3.884s] [ext: omni.kit.viewport.legacy_gizmos-1.0.18] startup
+[3.886s] [ext: omni.kit.raycast.query-1.1.0] startup
+[3.889s] [ext: omni.kit.menu.core-1.1.2] startup
+[3.889s] [ext: omni.kit.widget.options_menu-1.1.6] startup
+[3.890s] [ext: omni.kit.helper.file_utils-0.1.9] startup
+[3.891s] [ext: omni.kit.widget.path_field-2.0.11] startup
+[3.892s] [ext: omni.kit.widget.context_menu-1.2.5] startup
+[3.892s] [ext: omni.kit.widget.options_button-1.0.3] startup
+[3.893s] [ext: omni.kit.widget.filebrowser-2.12.2] startup
+[3.895s] [ext: omni.kit.widget.browser_bar-2.0.10] startup
+[3.896s] [ext: omni.kit.usd.layers-2.2.10] startup
+[3.900s] [ext: omni.ui.scene-1.11.4] startup
+[3.902s] [ext: omni.kit.viewport.registry-104.0.6] startup
+[3.903s] [ext: omni.kit.window.filepicker-2.13.3] startup
+[3.910s] [ext: omni.kit.menu.utils-2.0.3] startup
+[3.914s] [ext: omni.kit.context_menu-1.8.6] startup
+[3.915s] [ext: omni.kit.viewport.scene_camera_model-1.0.6] startup
+[3.918s] [ext: omni.kit.hydra_texture-1.4.5] startup
+[3.919s] [ext: omni.kit.window.file_importer-1.1.18] startup
+[3.921s] [ext: omni.kit.widget.searchable_combobox-1.0.6] startup
+[3.921s] [ext: omni.kit.window.drop_support-1.0.5] startup
+[3.921s] [ext: omni.kit.widget.viewport-107.1.3] startup
+[3.923s] [ext: omni.kit.material.library-2.0.7] startup
+[3.926s] [ext: omni.hydra.engine.stats-1.0.3] startup
+[3.927s] [ext: omni.kit.widget.settings-1.2.3] startup
+[3.928s] [ext: omni.kit.viewport.window-107.0.12] startup
+[3.936s] [ext: omni.kit.window.preferences-1.8.0] startup
+[3.939s] [ext: omni.kit.widget.toolbar-2.0.1] startup
+[3.941s] [ext: omni.kit.viewport.utility-1.1.2] startup
+[3.941s] [ext: omni.kit.manipulator.transform-107.0.0] startup
+[3.944s] [ext: omni.kit.manipulator.tool.snap-1.5.13] startup
+[3.946s] [ext: omni.kit.manipulator.selector-1.1.3] startup
+[3.946s] [ext: omni.kit.viewport.manipulator.transform-107.0.4] startup
+[3.947s] [ext: omni.kit.manipulator.viewport-107.0.1] startup
+[3.948s] [ext: omni.kit.primitive.mesh-1.0.17] startup
+[3.949s] [ext: omni.kit.manipulator.prim.core-107.0.8] startup
+[3.952s] [ext: omni.fabric.commands-1.1.6] startup
+[3.954s] [ext: omni.kit.manipulator.prim.usd-107.0.3] startup
+[3.954s] [ext: omni.kit.manipulator.prim.fabric-107.0.4] startup
+[3.955s] [ext: omni.debugdraw-0.1.4] startup
+[3.957s] [ext: omni.kit.property.adapter.core-1.0.2] startup
+[3.958s] [ext: omni.kit.manipulator.prim-107.0.0] startup
+[3.958s] [ext: omni.usdphysics-107.3.18] startup
+[3.959s] [ext: omni.kit.manipulator.selection-106.0.1] startup
+[3.960s] [ext: omni.kit.hotkeys.core-1.3.10] startup
+[3.961s] [ext: omni.kit.property.adapter.usd-1.0.2] startup
+[3.961s] [ext: omni.kit.widget.searchfield-1.1.8] startup
+[3.962s] [ext: omni.kit.widget.filter-1.1.4] startup
+[3.962s] [ext: omni.kit.property.adapter.fabric-1.0.3] startup
+[3.963s] [ext: omni.kit.widget.highlight_label-1.0.3] startup
+[3.963s] [ext: omni.kit.window.file_exporter-1.0.33] startup
+[3.964s] [ext: omni.kit.stage_template.core-1.1.22] startup
+[3.964s] [ext: omni.kit.widget.stage-3.1.4] startup
+[3.970s] [ext: omni.kit.widget.prompt-1.0.7] startup
+[3.970s] [ext: omni.kit.window.property-1.12.1] startup
+[3.971s] [ext: omni.kvdb-107.3.18] startup
+[3.972s] [ext: omni.kit.window.file-2.0.5] startup
+[3.974s] [ext: omni.kit.window.content_browser_registry-0.0.6] startup
+[3.974s] [ext: omni.kit.viewport.menubar.core-107.1.5] startup
+[3.981s] [ext: omni.kit.viewport.actions-107.0.2] startup
+[3.984s] [ext: omni.kit.window.content_browser-3.1.1] startup
+[3.990s] [ext: omni.kit.viewport.menubar.display-107.0.3] startup
+[3.990s] [ext: omni.kit.widget.layers-1.8.6] startup
+[3.997s] [ext: omni.kit.property.usd-4.5.11] startup
+[4.003s] [ext: omni.physx.foundation-107.3.18] startup
+[4.004s] [ext: omni.localcache-107.3.18] startup
+[4.005s] [ext: omni.convexdecomposition-107.3.18] startup
+[4.006s] [ext: omni.usdphysics.ui-107.3.18] startup
+[4.021s] [ext: omni.physx.cooking-107.3.18] startup
+[4.023s] [ext: omni.usd.metrics.assembler-107.3.1] startup
+[4.026s] [ext: omni.physx-107.3.18] startup
+[4.031s] [ext: omni.physics-107.3.18] startup
+[4.033s] [ext: omni.physx.commands-107.3.18] startup
+[4.035s] [ext: omni.physics.stageupdate-107.3.18] startup
+[4.036s] [ext: omni.inspect-1.0.2] startup
+[4.037s] [ext: omni.physx.ui-107.3.18] startup
+[4.055s] [ext: omni.graph.core-2.184.3] startup
+[4.057s] [ext: omni.physics.physx-107.3.18] startup
+[4.058s] [ext: isaacsim.core.deprecation_manager-0.2.7] startup
+[4.058s] [ext: omni.physics.tensors-107.3.18] startup
+[4.061s] [ext: omni.kit.numpy.common-0.1.2] startup
+[4.061s] [ext: isaacsim.core.version-2.0.6] startup
+[4.062s] [ext: omni.warp.core-1.7.1] startup
+[4.156s] [ext: omni.usd.metrics.assembler.physics-107.3.18] startup
+[4.157s] [ext: omni.isaac.dynamic_control-2.0.7] startup
+2026-07-28T07:56:17Z [4,144ms] [Warning] [omni.isaac.dynamic_control] omni.isaac.dynamic_control is deprecated as of Isaac Sim 4.5. No action is needed from end-users.
+[4.161s] [ext: isaacsim.storage.native-1.2.8] startup
+[4.162s] [ext: isaacsim.core.utils-3.4.5] startup
+[4.163s] [ext: omni.graph.tools-1.79.2] startup
+[4.175s] [ext: omni.graph.action_core-1.1.7] startup
+[4.176s] [ext: omni.graph-1.141.2] startup
+[4.200s] [ext: omni.physx.tensors-107.3.18] startup
+[4.203s] [ext: omni.graph.action_nodes-1.50.4] startup
+[4.205s] [ext: isaacsim.core.simulation_manager-1.3.2] startup
+[5.588s] [ext: omni.kit.usd.collect-2.4.5] startup
+[5.592s] [ext: omni.kit.stage_templates-2.0.0] startup
+[5.594s] [ext: isaacsim.core.prims-0.5.1] startup
+[5.603s] [ext: omni.kit.usdz_export-1.0.9] startup
+[5.608s] [ext: isaacsim.core.api-4.6.10] startup
+[5.613s] [ext: omni.kit.tool.asset_importer-4.3.2] startup
+[5.618s] [ext: omni.graph.action-1.130.0] startup
+[5.619s] [ext: omni.kit.selection-0.1.6] startup
+[5.620s] [ext: omni.ui_query-1.1.8] startup
+[5.621s] [ext: omni.kit.stagerecorder.core-107.0.3] startup
+[5.623s] [ext: omni.kit.widget.text_editor-1.1.1] startup
+[5.625s] [ext: omni.kit.ui_test-1.3.6] startup
+[5.626s] [ext: omni.kit.stagerecorder.ui-107.0.1] startup
+[5.628s] [ext: omni.kit.window.extensions-1.4.26] startup
+[5.631s] [ext: omni.graph.visualization.nodes-2.1.3] startup
+[5.637s] [ext: omni.kit.stagerecorder.bundle-105.0.2] startup
+[5.637s] [ext: isaacsim.gui.components-1.1.9] startup
+[5.640s] [ext: isaacsim.gui.menu-2.3.17] startup
+[5.896s] [ext: isaacsim.app.about-2.0.11] startup
+[5.899s] [ext: isaacsim.asset.importer.mjcf-2.5.8] startup
+[5.929s] [ext: semantics.schema.editor-2.0.1] startup
+2026-07-28T07:56:19Z [5,916ms] [Warning] [pxr.Semantics] pxr.Semantics is deprecated - please use Semantics instead
+[5.934s] [ext: semantics.schema.property-2.0.1] startup
+[5.935s] [ext: isaacsim.core.cloner-1.4.9] startup
+[5.937s] [ext: omni.graph.image.core-0.6.1] startup
+[5.938s] [ext: omni.kit.widget.stage_icons-1.0.8] startup
+[5.939s] [ext: omni.graph.image.nodes-1.3.1] startup
+[5.939s] [ext: omni.kit.window.stage-2.6.1] startup
+[5.942s] [ext: omni.kit.widget.graph-2.0.0] startup
+[5.945s] [ext: omni.kit.menu.create-2.0.1] startup
+[5.947s] [ext: omni.syntheticdata-0.6.13] startup
+[5.961s] [ext: isaacsim.util.debug_draw-3.1.0] startup
+[5.963s] [ext: omni.kit.graph.delegate.default-1.2.2] startup
+[5.965s] [ext: omni.kit.scripting-107.3.1] startup
+[5.969s] [ext: isaacsim.sensors.physx-2.2.27] startup
+[5.973s] [ext: omni.kit.graph.editor.core-1.5.3] startup
+[5.976s] [ext: omni.kit.graph.usd.commands-1.3.1] startup
+[5.978s] [ext: omni.kit.widget.material_preview-1.0.16] startup
+[5.982s] [ext: isaacsim.replicator.behavior-1.1.14] startup
+[5.985s] [ext: isaacsim.simulation_app-2.9.2] startup
+[5.986s] [ext: omni.anim.curve.core-1.3.1] startup
+[5.994s] [ext: omni.graph.scriptnode-1.50.0] startup
+[5.995s] [ext: omni.kit.window.material_graph-1.8.23] startup
+[6.011s] [ext: omni.sensors.nv.common-2.7.0-coreapi] startup
+[6.017s] [ext: omni.kit.viewport.menubar.settings-107.0.3] startup
+[6.020s] [ext: omni.graph.nodes-1.170.10] startup
+[6.026s] [ext: omni.graph.ui_nodes-1.50.5] startup
+[6.028s] [ext: omni.sensors.net-0.4.0-coreapi] startup
+[6.030s] [ext: omni.sensors.nv.materials-1.6.0-coreapi] startup
+[6.033s] [ext: omni.videoencoding-0.1.2] startup
+[6.034s] [ext: omni.sensors.nv.wpm-2.5.0-coreapi] startup
+[6.036s] [ext: omni.warp-1.7.1] startup
+[6.038s] [ext: omni.kit.manipulator.camera-106.0.4] startup
+[6.042s] [ext: omni.sensors.nv.ids-1.5.0-coreapi] startup
+[6.044s] [ext: omni.sensors.nv.lidar-2.7.0-coreapi] startup
+[6.071s] [ext: omni.sensors.nv.radar-2.8.0-coreapi] startup
+[6.075s] [ext: omni.replicator.core-1.12.16] startup
+Warp CUDA error: Failed to get driver entry point 'cuDeviceGetUuid' (CUDA error 1)
+Warp CUDA error: Function cuDeviceGetUuid_f: a suitable driver entry point was not found
+Warp CUDA error 36: API call is not supported in the installed CUDA driver (in function cuda_init, /builds/omniverse/warp/warp/native/warp.cu:277)
+2026-07-28T07:56:19Z [6,141ms] [Warning] [omni.replicator.core.scripts.extension] No material configuration file, adding configuration to material settings directly.
+[6.162s] [ext: omni.kit.property.audio-1.0.16] startup
+[6.166s] [ext: omni.kit.property.camera-1.0.10] startup
+[6.169s] [ext: omni.kit.property.light-1.0.12] startup
+[6.180s] [ext: omni.kit.property.geometry-2.0.4] startup
+[6.187s] [ext: isaacsim.core.nodes-3.2.16] startup
+[6.202s] [ext: isaacsim.gui.property-1.1.3] startup
+[6.226s] [ext: omni.kit.property.render-1.2.1] startup
+[6.228s] [ext: omni.hydra.scene_api-0.1.2] startup
+[6.234s] [ext: isaacsim.test.docstring-1.1.0] startup
+[6.284s] [ext: isaacsim.core.experimental.utils-0.2.0] startup
+[6.287s] [ext: omni.kit.widget.zoombar-1.0.6] startup
+[6.291s] [ext: omni.kit.property.transform-1.5.12] startup
+[6.360s] [ext: omni.kit.property.material-1.11.9] startup
+[6.371s] [ext: isaacsim.core.experimental.prims-0.6.2] startup
+[6.390s] [ext: omni.kit.browser.core-2.3.13] startup
+[6.399s] [ext: omni.kit.property.bundle-1.4.1] startup
+[6.402s] [ext: isaacsim.sensors.rtx-15.5.0] startup
+[6.407s] [ext: omni.kit.viewport.menubar.camera-107.0.3] startup
+[6.416s] [ext: isaacsim.robot.surface_gripper-3.2.6] startup
+[6.418s] [ext: omni.kit.browser.folder.core-1.10.9] startup
+[6.427s] [ext: isaacsim.sensors.physics-0.3.27] startup
+[6.430s] [ext: omni.kit.tool.collect-2.2.18] startup
+[6.434s] [ext: omni.kit.menu.stage-1.2.7] startup
+[6.436s] [ext: isaacsim.robot.manipulators-3.3.5] startup
+[6.441s] [ext: omni.kit.viewport.menubar.lighting-107.3.1] startup
+[6.445s] [ext: omni.kit.viewport.menubar.render-107.0.9] startup
+[6.450s] [ext: isaacsim.robot.policy.examples-4.1.11] startup
+[6.452s] [ext: isaacsim.examples.browser-0.1.12] startup
+[6.457s] [ext: isaacsim.asset.importer.urdf-2.4.19] startup
+[6.473s] [ext: omni.kit.window.console-1.1.4] startup
+[6.481s] [ext: omni.physx.demos-107.3.18] startup
+[6.497s] [ext: omni.kit.property.physx-107.3.18] startup
+[6.510s] [ext: omni.rtx.window.settings-0.6.19] startup
+[6.514s] [ext: omni.ocio-0.1.1] startup
+[6.516s] [ext: omni.replicator.replicator_yaml-2.0.11] startup
+[6.525s] [ext: omni.asset_validator.core-0.25.4] startup
+[6.555s] [ext: omni.physx.vehicle-107.3.18] startup
+[6.566s] [ext: omni.rtx.settings.core-0.6.5] startup
+[6.569s] [ext: omni.kit.window.script_editor-2.0.1] startup
+[6.571s] [ext: isaacsim.robot.wheeled_robots-4.0.23] startup
+[6.574s] [ext: omni.kit.window.toolbar-2.0.0] startup
+[6.578s] [ext: omni.physx.asset_validator-107.3.18] startup
+[6.583s] [ext: omni.physx.camera-107.3.18] startup
+[6.591s] [ext: omni.physx.cct-107.3.18] startup
+[6.603s] [ext: omni.physx.graph-107.3.18] startup
+[6.614s] [ext: omni.physx.supportui-107.3.18] startup
+[6.626s] [ext: omni.physx.telemetry-107.3.18] startup
+[6.628s] [ext: omni.kit.window.status_bar-0.1.8] startup
+[6.630s] [ext: omni.usd.metrics.assembler.ui-107.3.1] startup
+[6.638s] [ext: isaacsim.asset.browser-1.3.19] startup
+[6.641s] [ext: isaacsim.core.throttling-2.1.10] startup
+[6.642s] [ext: omni.kit.ui.actions-1.0.5] startup
+[6.644s] [ext: omni.physx.bundle-107.3.18] startup
+[6.644s] [ext: isaacsim.sensors.camera-1.3.1] startup
+[6.648s] [ext: isaaclab-0.47.2] startup
+[6.814s] [ext: isaaclab_assets-0.2.3] startup
+[6.964s] [ext: isaaclab_tasks-0.11.6] startup
+[7.922s] [ext: omni.kit.menu.common-2.0.0] startup
+[7.923s] [ext: isaaclab_rl-0.4.4] startup
+[7.924s] [ext: isaaclab_mimic-1.0.15] startup
+[7.924s] [ext: isaaclab.python-2.3.0] startup
+[7.925s] Simulation App Starting
+2026-07-28T07:56:21Z [8,030ms] [Warning] [usdrt.population.plugin] using high frequency span is disabled
+2026-07-28T07:56:21Z [8,046ms] [Warning] [omni.fabric.plugin] Warning: attribute viewportHandle not found for bucket id 9
+
+2026-07-28T07:56:21Z [8,121ms] [Warning] [carb] Acquiring non optional plugin interface which is not listed as dependency: [carb::dictionary::ISerializer v1.1] (plugin: carb.dictionary.serializer-json.plugin), by client: carb.scenerenderer-rtx.plugin. Add it to CARB_PLUGIN_IMPL_DEPS() macro of a client.
+[8.214s] app ready
+2026-07-28T07:56:22Z [9,651ms] [Warning] [usdrt.hydra.fabric_scene_delegate.plugin] using high frequency span is disabled
+2026-07-28T07:56:22Z [9,651ms] [Warning] [usdrt.hydra.fabric_scene_delegate.plugin] using high frequency span is disabled
+2026-07-28T07:56:22Z [9,651ms] [Warning] [usdrt.hydra.fabric_scene_delegate.plugin] using high frequency span with attrs is disabled
+2026-07-28T07:56:22Z [9,763ms] [Warning] [usdrt.hydra.fabric_scene_delegate.plugin] using high frequency span is disabled
+2026-07-28T07:56:22Z [9,763ms] [Warning] [usdrt.hydra.fabric_scene_delegate.plugin] using high frequency span is disabled
+[10.009s] Simulation App Startup Complete
+[10.029s] [ext: omni.physx.fabric-107.3.18] startup
+
+==============================================================================
+GRASP + HOLD TEST   —   UR5e + RH-P12-RN   —   Module 02, Day 4
+==============================================================================
+robot usd          : /home/mte/Abdur_Rabbi_Thesis_updated/ur5_grasp/assets/ur5e_rhp12.usd
+cube usd           : https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/5.1/Isaac/Props/Blocks/DexCube/dex_cube_instanceable.usd
+cube scale         : 0.8
+cube edge (scaled) : 0.04800 m      <- Day 3 drop test, not read from USD
+effort_limit_sim   : 10.0 N-m
+gripper stiffness  : 100.0
+solver pos iters   : 32
+self collisions    : False
+mode               : CONTROL — NO CUBE
+contact sensing    : True
+banked prediction  : pads stall at q ~ 0.69
+==============================================================================
+
+--- resolving pad prims for contact sensing ---
+  rh_p12_rn_r2       -> /World/Robot/RHP12/rh_p12_rn_r2
+  rh_p12_rn_l2       -> /World/Robot/RHP12/rh_p12_rn_l2
+  rh_p12_rn_r1       -> /World/Robot/RHP12/rh_p12_rn_r1
+  rh_p12_rn_l1       -> /World/Robot/RHP12/rh_p12_rn_l1
+  [PASS] all 4 finger prims resolved (a sensor on nothing reads 0.0 N)  — 4/4 found
+2026-07-28T07:56:26Z [12,972ms] [Warning] [usdrt.hydra.fabric_scene_delegate.plugin] using high frequency span with attrs is disabled
+2026-07-28T07:56:26Z [12,979ms] [Warning] [usdrt.hydra.fabric_scene_delegate.plugin] using high frequency span with attrs is disabled
+2026-07-28T07:56:26Z [12,979ms] [Warning] [omni.fabric.plugin] getAttributeCount called on non-existent path /World/Robot/wrist_2_link/visuals/wrist2
+2026-07-28T07:56:26Z [12,979ms] [Warning] [omni.fabric.plugin] getTypes called on non-existent path /World/Robot/wrist_2_link/visuals/wrist2
+
+  all joints (10): ['shoulder_pan_joint', 'shoulder_lift_joint', 'elbow_joint', 'wrist_1_joint', 'wrist_2_joint', 'wrist_3_joint', 'rh_l1', 'rh_p12_rn', 'rh_l2', 'rh_r2']
+  gripper joints     : ['rh_p12_rn', 'rh_l1', 'rh_r2', 'rh_l2']  (indices [7, 6, 9, 8])
+  [PASS] all 4 gripper joints found by name  — 4 found
+
+--- PHASE 0: settle at home, gripper open, 200 steps ---
+2026-07-28T07:56:27Z [14,607ms] [Warning] [carb] Client gpu.foundation.plugin has acquired [gpu::unstable::IMemoryBudgetManagerFactory v0.1] 100 times. Consider accessing this interface with carb::getCachedInterface() (Performance warning)
+  pad origin gap, open : 0.1147 m   (Day 3 free-space value 0.1145)
+  pad ORIGIN midpoint  : x=+0.4305 y=+0.1333 z=+0.3955 m
+  pad FACE   midpoint  : x=+0.4301 y=+0.1333 z=+0.3829 m
+  face - origin        : 12.62 mm   <- how far run 1's cube was misplaced
+  --place-at           : padface  (run 1 was equivalent to 'origin')
+  --grasp-depth        : +0.0 mm along the tool axis
+  clearance vs cube    : +0.0586 m
+  [PASS] open pads clear the cube with the arm loaded  — face gap 0.1066 m vs cube 0.0480 m
+
+--- PHASE 1: SKIPPED — control mode, there is no cube in the scene ---
+
+--- PHASE 2: closing in 0.02 rad steps, 40 steps each ---
+    q_cmd   q_meas      lag   org_gap  face_gap   Fc_r2   Fc_l2    Nr2    Nl2    Nr1    Nl1  cube_dz
+     0.00   0.0003  -0.0003    0.1147    0.1066     nan     nan    0.0    0.0    0.0    0.0      nan
+     0.02   0.0202  -0.0002    0.1135    0.1054     nan     nan    0.0    0.0    0.0    0.0      nan
+     0.04   0.0402  -0.0002    0.1123    0.1042     nan     nan    0.0    0.0    0.0    0.0      nan
+     0.06   0.0602  -0.0002    0.1111    0.1030     nan     nan    0.0    0.0    0.0    0.0      nan
+     0.08   0.0802  -0.0002    0.1098    0.1017     nan     nan    0.0    0.0    0.0    0.0      nan
+     0.10   0.1002  -0.0002    0.1085    0.1004     nan     nan    0.0    0.0    0.0    0.0      nan
+     0.12   0.1202  -0.0002    0.1072    0.0991     nan     nan    0.0    0.0    0.0    0.0      nan
+     0.14   0.1402  -0.0002    0.1058    0.0977     nan     nan    0.0    0.0    0.0    0.0      nan
+     0.16   0.1602  -0.0002    0.1043    0.0962     nan     nan    0.0    0.0    0.0    0.0      nan
+     0.18   0.1802  -0.0002    0.1029    0.0948     nan     nan    0.0    0.0    0.0    0.0      nan
+     0.20   0.2002  -0.0002    0.1014    0.0933     nan     nan    0.0    0.0    0.0    0.0      nan
+     0.22   0.2202  -0.0002    0.0999    0.0918     nan     nan    0.0    0.0    0.0    0.0      nan
+     0.24   0.2402  -0.0002    0.0983    0.0902     nan     nan    0.0    0.0    0.0    0.0      nan
+     0.26   0.2602  -0.0002    0.0967    0.0886     nan     nan    0.0    0.0    0.0    0.0      nan
+     0.28   0.2802  -0.0002    0.0951    0.0870     nan     nan    0.0    0.0    0.0    0.0      nan
+     0.30   0.3002  -0.0002    0.0934    0.0853     nan     nan    0.0    0.0    0.0    0.0      nan
+     0.32   0.3202  -0.0002    0.0917    0.0836     nan     nan    0.0    0.0    0.0    0.0      nan
+     0.34   0.3402  -0.0002    0.0900    0.0819     nan     nan    0.0    0.0    0.0    0.0      nan
+     0.36   0.3602  -0.0002    0.0883    0.0802     nan     nan    0.0    0.0    0.0    0.0      nan
+     0.38   0.3802  -0.0002    0.0865    0.0784     nan     nan    0.0    0.0    0.0    0.0      nan
+     0.40   0.4002  -0.0002    0.0847    0.0766     nan     nan    0.0    0.0    0.0    0.0      nan
+     0.42   0.4202  -0.0002    0.0829    0.0748     nan     nan    0.0    0.0    0.0    0.0      nan
+     0.44   0.4402  -0.0002    0.0810    0.0729     nan     nan    0.0    0.0    0.0    0.0      nan
+     0.46   0.4602  -0.0002    0.0791    0.0710     nan     nan    0.0    0.0    0.0    0.0      nan
+     0.48   0.4802  -0.0002    0.0772    0.0691     nan     nan    0.0    0.0    0.0    0.0      nan
+     0.50   0.5002  -0.0002    0.0753    0.0672     nan     nan    0.0    0.0    0.0    0.0      nan
+     0.52   0.5202  -0.0002    0.0733    0.0652     nan     nan    0.0    0.0    0.0    0.0      nan
+     0.54   0.5402  -0.0002    0.0713    0.0632     nan     nan    0.0    0.0    0.0    0.0      nan
+     0.56   0.5602  -0.0002    0.0693    0.0612     nan     nan    0.0    0.0    0.0    0.0      nan
+     0.58   0.5802  -0.0002    0.0673    0.0592     nan     nan    0.0    0.0    0.0    0.0      nan
+     0.60   0.6002  -0.0002    0.0652    0.0571     nan     nan    0.0    0.0    0.0    0.0      nan
+     0.62   0.6202  -0.0002    0.0632    0.0551     nan     nan    0.0    0.0    0.0    0.0      nan
+     0.64   0.6402  -0.0002    0.0611    0.0530     nan     nan    0.0    0.0    0.0    0.0      nan
+     0.66   0.6602  -0.0002    0.0590    0.0509     nan     nan    0.0    0.0    0.0    0.0      nan
+     0.68   0.6802  -0.0002    0.0569    0.0488     nan     nan    0.0    0.0    0.0    0.0      nan
+     0.70   0.7002  -0.0002    0.0547    0.0466     nan     nan    0.0    0.0    0.0    0.0      nan
+     0.72   0.7202  -0.0002    0.0526    0.0445     nan     nan    0.0    0.0    0.0    0.0      nan
+     0.74   0.7402  -0.0002    0.0504    0.0423     nan     nan    0.0    0.0    0.0    0.0      nan
+     0.76   0.7602  -0.0002    0.0482    0.0401     nan     nan    0.0    0.0    0.0    0.0      nan
+     0.78   0.7802  -0.0002    0.0461    0.0380     nan     nan    0.0    0.0    0.0    0.0      nan
+     0.80   0.8002  -0.0002    0.0438    0.0357     nan     nan    0.0    0.0    0.0    0.0      nan
+     0.82   0.8202  -0.0002    0.0416    0.0335     nan     nan    0.0    0.0    0.0    0.0      nan
+     0.84   0.8402  -0.0002    0.0394    0.0313     nan     nan    0.0    0.0    0.0    0.0      nan
+     0.86   0.8602  -0.0002    0.0372    0.0291     nan     nan    0.0    0.0    0.0    0.0      nan
+     0.88   0.8802  -0.0002    0.0349    0.0268     nan     nan    0.0    0.0    0.0    0.0      nan
+     0.90   0.9002  -0.0002    0.0327    0.0246     nan     nan    0.0    0.0    0.0    0.0      nan
+     0.92   0.9202  -0.0002    0.0304    0.0223     nan     nan    0.0    0.0    0.0    0.0      nan
+     0.94   0.9402  -0.0002    0.0282    0.0201     nan     nan    0.0    0.0    0.0    0.0      nan
+     0.96   0.9602  -0.0002    0.0259    0.0178     nan     nan    0.0    0.0    0.0    0.0      nan
+     0.98   0.9802  -0.0002    0.0236    0.0155     nan     nan    0.0    0.0    0.0    0.0      nan
+     1.00   1.0002  -0.0002    0.0213    0.0132     nan     nan    0.0    0.0    0.0    0.0      nan
+
+--- CONTACT CHANNEL: which link, if any, is actually touching? ---
+  peak FILTERED, pad -> cube      : nan N
+  peak NET,      pads  (r2/l2)    : 0.00 N
+  peak NET,      proximal (r1/l1) : 0.00 N
+  CONTROL RUN — there is no cube. Any non-zero force here is the gripper
+  touching ITSELF or the arm, and that alone would explain the stall.
+  DIAGNOSIS: NO finger link is touching anything, yet the fingers are blocked
+             (see the lag column). The obstruction is not contact at all.
+             Compare the stall gap against the control run: if the EMPTY gripper
+             stalls in the same place, the cube was never the variable and the
+             fault is inside the gripper — actuation or self-collision.
+
+--- STALL WIDTH: measured vs the prediction banked on 2026-07-28 ---
+  minimum face gap reached : 0.0132 m   vs cube 0.0480 m
+  pads never stalled: they tracked the command to q=1.0.
+  Meaning: the fingers closed THROUGH the cube, or never touched it.
+  [FAIL] pads stall on the cube rather than closing through it  — no stall detected
+
+--- CONTACT FORCE: measured vs the ROBOTIS datasheet ---
+  peak pad force     : nan N
+  datasheet maximum  : 170.0 N
+  effort_limit_sim   : 10.0 N-m
+  [FAIL] pads transmit real normal force (not the §9 Robotiq failure)  — peak nan N
+  to hit 170 N exactly, scale effort_limit_sim by nan  ->  nan N-m
+  [FAIL] peak force is the same order as the datasheet 170 N (0.25x .. 4x)  — ratio nanx
+
+--- PHASES 3 and 4: SKIPPED — control mode, there is no cube to hold ---
+
+--- PHASE 5: TCP_OFFSET for this thesis, taken at the grasp ---
+  pad origin gap at the grasp : 0.0213 m
+  pad midpoint in wrist frame : x=+0.00000 y=-0.00000 z=+0.11755 m
+  |offset|                    : 0.11755 m
+
+  TCP_OFFSET = (+0.00000, -0.00000, +0.11755)   <- use this in the lift env
+  Day 3 free-space values were 0.0767 (q=0) and 0.1049 (q=1). This is taken at the
+  actual grasp, which is the only q where the number means anything.
+  The archive's 0.130 is NOT this number and was invalidated on Day 3.
+
+==============================================================================
+RESULT: FAIL — 3 of 6 checks failed
+  - pads stall on the cube rather than closing through it
+  - pads transmit real normal force (not the §9 Robotiq failure)
+  - peak force is the same order as the datasheet 170 N (0.25x .. 4x)
+
+Look the symptom up in the decision-rule table in logbook/02_grasp_env.md.
+Change ONE knob. Re-run. Never two at once.
+==============================================================================
+

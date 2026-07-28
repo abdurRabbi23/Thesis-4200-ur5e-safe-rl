@@ -62,6 +62,96 @@ Later → crushing or slipping; earlier → wedged on the curved `r1`/`l1` links
 Day 3 — sim gives 4 drivable finger joints where the real RH-P12-RN is 1-DOF — must be settled
 before the PPO baseline, not after.
 
+## Day 5 (2026-07-30) — SECOND GRIPPER (2F-85) WRITTEN, **NOT YET RUN**
+
+Three files on disk, all compiling, none executed. **Nothing here is a result.**
+
+> **Scope override, recorded not buried.** The Day 4 handoff said *"do not start the 2F-85
+> this session"*. It was started anyway at the supervisor's instruction. **The one-day timebox
+> stands; Layer 1 is not gated on the 2F-85.**
+
+> **Correction, caught by `ls` and not by any handoff.** The Day 4 handoff — and the first
+> draft of the Day 5 one — both said run 7 was unrun. **It has run twice, and failed twice.**
+> `02_grasp_hold_test_run7_30mm.log` FAIL 2/9; `02_grasp_hold_test_run7_depth.log` (newest)
+> FAIL 3/9 on the 48 mm cube: **stall q = 0.3063 against the banked 0.69**, peak pad force
+> **0.00 N**, static hold dropped **+32.31 mm**. Passing: prims and joints all resolved, cube
+> square to the pads (0.00°), open pads clear the cube, TCP rose +84.2 mm, slip 0.12 mm.
+> A stall at 0.31 against a predicted 0.69 is not a near miss — it is a contact neither the
+> pad theory nor the throat theory predicts, and run 6's PHASE 0b remains WITHDRAWN, so the
+> throat explanation is unproven rather than disproven. **This is the open Layer 1 question.**
+> §5's rule earned its place again: verify on disk, never trust a handoff.
+
+The archive was mounted and mined (§14). It confirms `ur5e.usd` carries a variant set
+`Gripper = [None, Robotiq_2f_85]`, that the merged asset loads as ONE articulation at 12
+joints / 16 bodies, and it names all six finger joints. **Caveat that governs all of it:** the
+archive read that asset from `Assets/Isaac/`**`5.1`**`/Isaac` and this thesis is frozen on
+**5.0**, so every name carried across is a hypothesis until PHASE C re-reads it here.
+
+**The archive's 2F-85 failure has a precise cause, and it is not the one §9 states.** §9 rejects
+the *URDF route* — a tree cannot hold a four-bar loop. The archive never used a URDF; it used
+this same NVIDIA USD variant. What it did was drive `finger_joint` alone and leave the other
+five finger joints **passive at stiffness 0**, expecting the mechanical loop to carry them. The
+pads then transmitted no normal force, the cube fell straight through, stiffness 20→400 and
+effort 50→200 did not help, and it fell back to a **proximity weld** — the fake gripper that
+measured every headline number in the previous thesis.
+
+Why passive cannot work, from upstream rather than from us: Isaac Sim resolves closed-loop
+kinematics automatically through USD schemas, but **Isaac Lab requires every mimic joint to be
+fully specified in the ArticulationCfg** (IsaacLab #2424, #2626, #2665). A joint Isaac Lab was
+never told about is not coupled — it is limp, and limp joints fold under contact instead of
+transmitting it. That is "pads touch, force ≈ 0 N" exactly.
+
+**The bet: all six finger joints DRIVEN from one scalar through an explicit sign table, none
+passive.** Not a new idea — it is the pattern that already worked here on the RH-P12-RN, where
+four coupled joints sharing one scalar reproduced the published 106.0 mm to +0.4 mm. The signs
+live in the binary-action command, not the gains, so the policy still sees ONE scalar and the
+two grippers stay benchmark-comparable.
+
+| File | Status |
+|---|---|
+| `ur5_grasp/tools/make_ur5e_robotiq_usd.py` | written, unrun — PHASES A–F |
+| `ur5_grasp/robots/ur5e_robotiq_cfg.py` | written, unrun — six driven joints, contact sensors ON |
+| `ur5_grasp/robots/__init__.py` | `GRIPPERS` registry added, `DEFAULT_GRIPPER = "rhp12"` |
+
+**Banked before the run:** Robotiq publishes **stroke 85 mm** and **gripping force 20–235 N**.
+PHASE F checks the open clear opening against 85 mm ± 4 mm — the same external-target move that
+made the RH-P12-RN's 106.4 mm worth something. Effort limit 12.0 N·m is **PROVISIONAL**;
+calibrate against measured force, not torque. The archive's 200.0 is ~17× the datasheet.
+
+**Day 4's lesson is built into the tool, not written under it.** PHASE E measures the free-space
+closest approach of *every* finger link to the centreline before anything touches anything — the
+nine rows of numbers that would have saved six runs on the RH-P12-RN. `PAD_BODIES` is a labelled
+hypothesis with a test attached.
+
+**If the pads still read ≈ 0 N with all six driven, §9 is confirmed on its own terms** — close
+the 2F-85 as a documented negative result. That is a paragraph in the book, not a failed session.
+
+**Next:** run the build tool, read PHASES A→F in order, stop at the first FAIL. Then **return to
+the RH-P12-RN critical path** — run 7 and the withdrawn run-6 conclusion.
+
+## Day 4 (2026-07-29) — CONFIG + GRASP TEST WRITTEN, **NOT YET RUN**
+
+Two files on disk, both compiling, neither executed. Nothing here is a result yet.
+
+- `ur5_grasp/robots/ur5e_rhp12_cfg.py` — arm gains carried from the **measured** `ur5e_cfg.py`
+  (shoulder 1320 / elbow 1320 / wrist 216), contact sensing on, solver iterations 16 → 32.
+- `ur5_grasp/scripts/grasp_hold_test.py` — close, measure stall + force, release, lift, measure
+  slip, then read `TCP_OFFSET` **at the grasp**. No IK, by design.
+
+**Day 3's open question is answered: the gripper is ONE degree of freedom.** All four finger
+joints share one actuator group and one scalar target, because the real hardware has a single
+Dynamixel and coupled fingers. Evidence the same-`q` coupling is the correct one and not merely
+convenient: the Day 3 sweep used it and reproduced the published 106.0 mm stroke to +0.4 mm.
+
+**Second external validation entered the thesis:** ROBOTIS publishes **Maximum Gripping Force
+170 N**. The URDF's `effort="1000"` placeholder is worth ~17 kN at the pad, so
+`effort_limit_sim = 10.0 N·m` (170 N × ~0.06 m). The lever arm is an estimate — so the **force**
+is the thing validated, not the torque.
+
+Five predictions banked before the run (stall `q` 0.69±0.03, peak force 100–300 N, static drop
+< 5 mm, lift slip < 5 mm, `TCP_OFFSET` ≈ 0.1015 m). The lift-slip one is the genuine unknown and
+is labelled as such — the wedge is exactly what a static test cannot see.
+
 ## Previous status (2026-07-27, Day 2 — MODULE 02: ARM SIGNED OFF)
 
 **The UR5e arm loads, holds pose, and is signed off.** `check_ur5e.py` reports **9/9 PASS**:
